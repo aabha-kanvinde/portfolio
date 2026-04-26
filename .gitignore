@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# large unused source files
+public/videos/swatch-info-stream.mov
+public/videos/swatch-info-demo.mp4
+public/videos/swatch-info-demo-2.mp4
+public/Switzer_Complete
+public/Gambarino_Complete

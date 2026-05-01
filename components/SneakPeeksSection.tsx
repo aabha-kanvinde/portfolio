@@ -96,8 +96,19 @@ const items: SneakPeek[] = [
   },
 ];
 
+const row1Ids = [4, 3];
+const row2Ids = [5, 6, 2];
+const row3Ids = [7, 9, 1];
+
+function getRow(ids: number[]): SneakPeek[] {
+  return ids.map((id) => items.find((item) => item.id === id)!);
+}
+
 export default function SneakPeeksSection() {
   const [activeId, setActiveId] = useState<number | null>(null);
+  const [hoveredId, setHoveredId] = useState<number | null>(null);
+  const [modalVisible, setModalVisible] = useState(false);
+
   const active = items.find((item) => item.id === activeId) ?? null;
   const fireflyVideoRef = useRef<HTMLVideoElement>(null);
   const alignCenterVideoRef = useRef<HTMLVideoElement>(null);
@@ -112,132 +123,148 @@ export default function SneakPeeksSection() {
     return () => { document.body.style.overflow = ""; };
   }, [active]);
 
+  useEffect(() => {
+    if (activeId !== null) {
+      const rafId = requestAnimationFrame(() => setModalVisible(true));
+      return () => cancelAnimationFrame(rafId);
+    } else {
+      setModalVisible(false);
+    }
+  }, [activeId]);
+
+  function playVideo(id: number) {
+    switch (id) {
+      case 2: fireflyVideoRef.current?.play(); break;
+      case 3: realTimePencilVideoRef.current?.play(); break;
+      case 4: gradientPresetsVideoRef.current?.play(); break;
+      case 5: gradientSuggestionsVideoRef.current?.play(); break;
+      case 6: alignCenterVideoRef.current?.play(); break;
+      case 7: searchPreferencesVideoRef.current?.play(); break;
+      case 9: ungroupAllVideoRef.current?.play(); break;
+    }
+  }
+
+  function pauseResetVideo(id: number) {
+    const elMap: Record<number, HTMLVideoElement | null> = {
+      2: fireflyVideoRef.current,
+      3: realTimePencilVideoRef.current,
+      4: gradientPresetsVideoRef.current,
+      5: gradientSuggestionsVideoRef.current,
+      6: alignCenterVideoRef.current,
+      7: searchPreferencesVideoRef.current,
+      9: ungroupAllVideoRef.current,
+    };
+    const el = elMap[id];
+    if (el) { el.pause(); el.currentTime = 0; el.load(); }
+  }
+
+  function handleMouseEnter(id: number) {
+    setHoveredId(id);
+    playVideo(id);
+  }
+
+  function handleMouseLeave(id: number) {
+    setHoveredId(null);
+    pauseResetVideo(id);
+  }
+
+  function handleModalClose() {
+    setActiveId(null);
+  }
+
+  const mediaStyle: React.CSSProperties = {
+    width: "100%",
+    aspectRatio: "16/9",
+    objectFit: "cover",
+    display: "block",
+  };
+
+  function renderCardMedia(item: SneakPeek) {
+    switch (item.id) {
+      case 1:
+        // eslint-disable-next-line @next/next/no-img-element
+        return <img src="/sneak-peeks/aiXff.png" alt="" style={mediaStyle} />;
+      case 2:
+        return <video ref={fireflyVideoRef} src="/sneak-peeks/IllustratorXFireflyBoards.mp4" poster="/sneak-peeks/AiXFFBoards.png" muted loop playsInline style={mediaStyle} />;
+      case 3:
+        return <video ref={realTimePencilVideoRef} src="/sneak-peeks/pencil.mp4" poster="/sneak-peeks/pencil.png" muted loop playsInline style={mediaStyle} />;
+      case 4:
+        return <video ref={gradientPresetsVideoRef} src="/sneak-peeks/gradient-presets-2.mp4" poster="/sneak-peeks/presets2.png" muted loop playsInline style={mediaStyle} />;
+      case 5:
+        return <video ref={gradientSuggestionsVideoRef} src="/sneak-peeks/gradient-suggestions-2.mp4" poster="/sneak-peeks/suggestions2.png" muted loop playsInline style={mediaStyle} />;
+      case 6:
+        return <video ref={alignCenterVideoRef} src="/sneak-peeks/align-center.mp4" poster="/sneak-peeks/align2.png" muted loop playsInline style={mediaStyle} />;
+      case 7:
+        return <video ref={searchPreferencesVideoRef} src="/sneak-peeks/search-preferences.mp4" poster="/sneak-peeks/search-preferences.png" muted loop playsInline style={mediaStyle} />;
+      case 9:
+        return <video ref={ungroupAllVideoRef} src="/sneak-peeks/ungroup-all-2.mp4" poster="/sneak-peeks/ungroup-all.png" muted loop playsInline style={mediaStyle} />;
+      default:
+        return <div style={{ width: "100%", aspectRatio: "16/9", background: item.gradient, display: "block" }} />;
+    }
+  }
+
+  function renderCard(item: SneakPeek) {
+    const hovered = hoveredId === item.id;
+    return (
+      <div
+        key={item.id}
+        style={{ cursor: "pointer" }}
+        onMouseEnter={() => handleMouseEnter(item.id)}
+        onMouseLeave={() => handleMouseLeave(item.id)}
+        onClick={() => setActiveId(item.id)}
+      >
+        <div
+          style={{
+            borderRadius: "var(--radius-lg)",
+            overflow: "hidden",
+            width: "100%",
+            aspectRatio: "16/9",
+            transform: hovered ? "translateY(-4px)" : "translateY(0)",
+            boxShadow: hovered ? "0 8px 24px rgba(45, 26, 10, 0.12)" : "none",
+            transition: "transform 200ms ease, box-shadow 200ms ease",
+          }}
+        >
+          {renderCardMedia(item)}
+        </div>
+        <p
+          style={{
+            margin: "var(--space-3) 0 0 0",
+            fontFamily: "var(--font-dm-sans)",
+            fontSize: "var(--text-body)",
+            color: "var(--color-heading)",
+            lineHeight: 1.4,
+          }}
+        >
+          {item.title}
+        </p>
+      </div>
+    );
+  }
+
   return (
     <>
       <style>{`
         .sneak-columns {
-          padding-inline: var(--space-6);
+          padding-inline: 48px;
         }
-        @media (min-width: 768px) {
-          .sneak-columns { padding-inline: var(--space-8); }
-        }
-        @media (min-width: 1024px) {
-          .sneak-columns { padding-inline: var(--space-10); }
-        }
-
-        .sneak-item {
-          cursor: pointer;
-        }
-        .sneak-image {
-          width: 100%;
-          display: block;
-          border-radius: var(--radius-md);
-          transition: opacity 150ms ease;
-        }
-        .sneak-item:hover .sneak-image {
-          opacity: 0.9;
-        }
-        .sneak-title {
-          font-family: var(--font-dm-sans), system-ui, sans-serif;
-          font-size: var(--text-body);
-          font-weight: 500;
-          color: var(--color-body);
-          margin: var(--space-3) 0 0 0;
-          line-height: 1.4;
-        }
+        @media (min-width: 768px) { .sneak-columns { padding-inline: 48px; } }
+        @media (min-width: 1024px) { .sneak-columns { padding-inline: 48px; } }
       `}</style>
 
-      {/* 3-column masonry layout */}
-      <div className="sneak-columns">
-        <div className="grid grid-cols-3" style={{ gap: '56px', alignItems: 'start' }}>
+      <div className="sneak-columns" style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+        {/* Row 1: 2 cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-[48px]">
+          {getRow(row1Ids).map((item) => renderCard(item))}
+        </div>
 
-          {/* Column 1: Gradient Presets, Gradient Suggestions, Firefly Interop */}
-          <div className="flex flex-col" style={{ gap: '64px' }}>
-            {items.filter(item => [4, 5, 2].includes(item.id)).map((item) => (
-              <div key={item.id} className="sneak-item" onClick={() => setActiveId(item.id)}>
-                {item.id === 1 ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src="/sneak-peeks/aiXff.png" alt="" className="sneak-image" style={{ aspectRatio: '16/9', objectFit: 'cover' }} />
-                ) : item.id === 2 ? (
-                  <video ref={fireflyVideoRef} src="/sneak-peeks/IllustratorXFireflyBoards.mp4" poster="/sneak-peeks/AiXFFBoards.png" muted loop playsInline onMouseEnter={() => fireflyVideoRef.current?.play()} onMouseLeave={() => { const el = fireflyVideoRef.current; if (!el) return; el.pause(); el.currentTime = 0; el.load(); }} className="w-full" style={{ aspectRatio: '16/9', objectFit: 'cover', borderRadius: 'var(--radius-lg)', display: 'block' }} />
-                ) : item.id === 7 ? (
-                  <video ref={searchPreferencesVideoRef} src="/sneak-peeks/search-preferences.mp4" poster="/sneak-peeks/search-preferences.png" muted loop playsInline onMouseEnter={() => searchPreferencesVideoRef.current?.play()} onMouseLeave={() => { const el = searchPreferencesVideoRef.current; if (!el) return; el.pause(); el.currentTime = 0; el.load(); }} className="w-full" style={{ aspectRatio: '16/9', objectFit: 'cover', borderRadius: 'var(--radius-lg)', display: 'block' }} />
-                ) : item.id === 9 ? (
-                  <video ref={ungroupAllVideoRef} src="/sneak-peeks/ungroup-all-2.mp4" poster="/sneak-peeks/ungroup-all.png" muted loop playsInline onMouseEnter={(e) => (e.currentTarget as HTMLVideoElement).play()} onMouseLeave={(e) => { const el = e.currentTarget as HTMLVideoElement; el.pause(); el.currentTime = 0; el.load(); }} className="w-full" style={{ aspectRatio: '16/9', objectFit: 'cover', borderRadius: 'var(--radius-lg)', display: 'block' }} />
-                ) : item.id === 6 ? (
-                  <video ref={alignCenterVideoRef} src="/sneak-peeks/align-center.mp4" poster="/sneak-peeks/align2.png" muted loop playsInline onMouseEnter={() => alignCenterVideoRef.current?.play()} onMouseLeave={() => { const el = alignCenterVideoRef.current; if (!el) return; el.pause(); el.currentTime = 0; el.load(); }} className="w-full" style={{ aspectRatio: '16/9', objectFit: 'cover', borderRadius: 'var(--radius-lg)', display: 'block' }} />
-                ) : item.id === 5 ? (
-                  <video ref={gradientSuggestionsVideoRef} src="/sneak-peeks/gradient-suggestions-2.mp4" poster="/sneak-peeks/suggestions2.png" muted loop playsInline onMouseEnter={() => gradientSuggestionsVideoRef.current?.play()} onMouseLeave={() => { const el = gradientSuggestionsVideoRef.current; if (!el) return; el.pause(); el.currentTime = 0; el.load(); }} className="w-full" style={{ aspectRatio: '16/9', objectFit: 'cover', borderRadius: 'var(--radius-lg)', display: 'block' }} />
-                ) : item.id === 4 ? (
-                  <video ref={gradientPresetsVideoRef} src="/sneak-peeks/gradient-presets-2.mp4" poster="/sneak-peeks/presets2.png" muted loop playsInline onMouseEnter={() => gradientPresetsVideoRef.current?.play()} onMouseLeave={() => { const el = gradientPresetsVideoRef.current; if (!el) return; el.pause(); el.currentTime = 0; el.load(); }} className="w-full" style={{ aspectRatio: '16/9', objectFit: 'cover', borderRadius: 'var(--radius-lg)', display: 'block' }} />
-                ) : item.id === 3 ? (
-                  <video ref={realTimePencilVideoRef} src="/sneak-peeks/pencil.mp4" poster="/sneak-peeks/pencil.png" muted loop playsInline onMouseEnter={() => realTimePencilVideoRef.current?.play()} onMouseLeave={() => { const el = realTimePencilVideoRef.current; if (!el) return; el.pause(); el.currentTime = 0; el.load(); }} className="w-full" style={{ aspectRatio: '16/9', objectFit: 'cover', borderRadius: 'var(--radius-lg)', display: 'block' }} />
-                ) : (
-                  <div className="sneak-image" style={{ aspectRatio: '16/9', background: item.gradient }} />
-                )}
-                <p className="sneak-title">{item.title}</p>
-              </div>
-            ))}
-          </div>
+        {/* Row 2: 3 cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-[48px]">
+          {getRow(row2Ids).map((item) => renderCard(item))}
+        </div>
 
-          {/* Column 2: Pencil, Search Preferences — offset down */}
-          <div className="flex flex-col" style={{ gap: '96px', paddingTop: 'calc(50% * 9 / 16)' }}>
-            {items.filter(item => [3, 7].includes(item.id)).map((item) => (
-              <div key={item.id} className="sneak-item" onClick={() => setActiveId(item.id)}>
-                {item.id === 1 ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src="/sneak-peeks/aiXff.png" alt="" className="sneak-image" style={{ aspectRatio: '16/9', objectFit: 'cover' }} />
-                ) : item.id === 2 ? (
-                  <video ref={fireflyVideoRef} src="/sneak-peeks/IllustratorXFireflyBoards.mp4" poster="/sneak-peeks/AiXFFBoards.png" muted loop playsInline onMouseEnter={() => fireflyVideoRef.current?.play()} onMouseLeave={() => { const el = fireflyVideoRef.current; if (!el) return; el.pause(); el.currentTime = 0; el.load(); }} className="w-full" style={{ aspectRatio: '16/9', objectFit: 'cover', borderRadius: 'var(--radius-lg)', display: 'block' }} />
-                ) : item.id === 7 ? (
-                  <video ref={searchPreferencesVideoRef} src="/sneak-peeks/search-preferences.mp4" poster="/sneak-peeks/search-preferences.png" muted loop playsInline onMouseEnter={() => searchPreferencesVideoRef.current?.play()} onMouseLeave={() => { const el = searchPreferencesVideoRef.current; if (!el) return; el.pause(); el.currentTime = 0; el.load(); }} className="w-full" style={{ aspectRatio: '16/9', objectFit: 'cover', borderRadius: 'var(--radius-lg)', display: 'block' }} />
-                ) : item.id === 9 ? (
-                  <video ref={ungroupAllVideoRef} src="/sneak-peeks/ungroup-all-2.mp4" poster="/sneak-peeks/ungroup-all.png" muted loop playsInline onMouseEnter={(e) => (e.currentTarget as HTMLVideoElement).play()} onMouseLeave={(e) => { const el = e.currentTarget as HTMLVideoElement; el.pause(); el.currentTime = 0; el.load(); }} className="w-full" style={{ aspectRatio: '16/9', objectFit: 'cover', borderRadius: 'var(--radius-lg)', display: 'block' }} />
-                ) : item.id === 6 ? (
-                  <video ref={alignCenterVideoRef} src="/sneak-peeks/align-center.mp4" poster="/sneak-peeks/align2.png" muted loop playsInline onMouseEnter={() => alignCenterVideoRef.current?.play()} onMouseLeave={() => { const el = alignCenterVideoRef.current; if (!el) return; el.pause(); el.currentTime = 0; el.load(); }} className="w-full" style={{ aspectRatio: '16/9', objectFit: 'cover', borderRadius: 'var(--radius-lg)', display: 'block' }} />
-                ) : item.id === 5 ? (
-                  <video ref={gradientSuggestionsVideoRef} src="/sneak-peeks/gradient-suggestions-2.mp4" poster="/sneak-peeks/suggestions2.png" muted loop playsInline onMouseEnter={() => gradientSuggestionsVideoRef.current?.play()} onMouseLeave={() => { const el = gradientSuggestionsVideoRef.current; if (!el) return; el.pause(); el.currentTime = 0; el.load(); }} className="w-full" style={{ aspectRatio: '16/9', objectFit: 'cover', borderRadius: 'var(--radius-lg)', display: 'block' }} />
-                ) : item.id === 4 ? (
-                  <video ref={gradientPresetsVideoRef} src="/sneak-peeks/gradient-presets-2.mp4" poster="/sneak-peeks/presets2.png" muted loop playsInline onMouseEnter={() => gradientPresetsVideoRef.current?.play()} onMouseLeave={() => { const el = gradientPresetsVideoRef.current; if (!el) return; el.pause(); el.currentTime = 0; el.load(); }} className="w-full" style={{ aspectRatio: '16/9', objectFit: 'cover', borderRadius: 'var(--radius-lg)', display: 'block' }} />
-                ) : item.id === 3 ? (
-                  <video ref={realTimePencilVideoRef} src="/sneak-peeks/pencil.mp4" poster="/sneak-peeks/pencil.png" muted loop playsInline onMouseEnter={() => realTimePencilVideoRef.current?.play()} onMouseLeave={() => { const el = realTimePencilVideoRef.current; if (!el) return; el.pause(); el.currentTime = 0; el.load(); }} className="w-full" style={{ aspectRatio: '16/9', objectFit: 'cover', borderRadius: 'var(--radius-lg)', display: 'block' }} />
-                ) : (
-                  <div className="sneak-image" style={{ aspectRatio: '16/9', background: item.gradient }} />
-                )}
-                <p className="sneak-title">{item.title}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* Column 3: Align Center, Ungroup All, Homescreen Revamp */}
-          <div className="flex flex-col" style={{ gap: '64px' }}>
-            {items.filter(item => [6, 9, 1].includes(item.id)).map((item) => (
-              <div key={item.id} className="sneak-item" onClick={() => setActiveId(item.id)}>
-                {item.id === 1 ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src="/sneak-peeks/aiXff.png" alt="" className="sneak-image" style={{ aspectRatio: '16/9', objectFit: 'cover' }} />
-                ) : item.id === 2 ? (
-                  <video ref={fireflyVideoRef} src="/sneak-peeks/IllustratorXFireflyBoards.mp4" poster="/sneak-peeks/AiXFFBoards.png" muted loop playsInline onMouseEnter={() => fireflyVideoRef.current?.play()} onMouseLeave={() => { const el = fireflyVideoRef.current; if (!el) return; el.pause(); el.currentTime = 0; el.load(); }} className="w-full" style={{ aspectRatio: '16/9', objectFit: 'cover', borderRadius: 'var(--radius-lg)', display: 'block' }} />
-                ) : item.id === 7 ? (
-                  <video ref={searchPreferencesVideoRef} src="/sneak-peeks/search-preferences.mp4" poster="/sneak-peeks/search-preferences.png" muted loop playsInline onMouseEnter={() => searchPreferencesVideoRef.current?.play()} onMouseLeave={() => { const el = searchPreferencesVideoRef.current; if (!el) return; el.pause(); el.currentTime = 0; el.load(); }} className="w-full" style={{ aspectRatio: '16/9', objectFit: 'cover', borderRadius: 'var(--radius-lg)', display: 'block' }} />
-                ) : item.id === 9 ? (
-                  <video ref={ungroupAllVideoRef} src="/sneak-peeks/ungroup-all-2.mp4" poster="/sneak-peeks/ungroup-all.png" muted loop playsInline onMouseEnter={(e) => (e.currentTarget as HTMLVideoElement).play()} onMouseLeave={(e) => { const el = e.currentTarget as HTMLVideoElement; el.pause(); el.currentTime = 0; el.load(); }} className="w-full" style={{ aspectRatio: '16/9', objectFit: 'cover', borderRadius: 'var(--radius-lg)', display: 'block' }} />
-                ) : item.id === 6 ? (
-                  <video ref={alignCenterVideoRef} src="/sneak-peeks/align-center.mp4" poster="/sneak-peeks/align2.png" muted loop playsInline onMouseEnter={() => alignCenterVideoRef.current?.play()} onMouseLeave={() => { const el = alignCenterVideoRef.current; if (!el) return; el.pause(); el.currentTime = 0; el.load(); }} className="w-full" style={{ aspectRatio: '16/9', objectFit: 'cover', borderRadius: 'var(--radius-lg)', display: 'block' }} />
-                ) : item.id === 5 ? (
-                  <video ref={gradientSuggestionsVideoRef} src="/sneak-peeks/gradient-suggestions-2.mp4" poster="/sneak-peeks/suggestions2.png" muted loop playsInline onMouseEnter={() => gradientSuggestionsVideoRef.current?.play()} onMouseLeave={() => { const el = gradientSuggestionsVideoRef.current; if (!el) return; el.pause(); el.currentTime = 0; el.load(); }} className="w-full" style={{ aspectRatio: '16/9', objectFit: 'cover', borderRadius: 'var(--radius-lg)', display: 'block' }} />
-                ) : item.id === 4 ? (
-                  <video ref={gradientPresetsVideoRef} src="/sneak-peeks/gradient-presets-2.mp4" poster="/sneak-peeks/presets2.png" muted loop playsInline onMouseEnter={() => gradientPresetsVideoRef.current?.play()} onMouseLeave={() => { const el = gradientPresetsVideoRef.current; if (!el) return; el.pause(); el.currentTime = 0; el.load(); }} className="w-full" style={{ aspectRatio: '16/9', objectFit: 'cover', borderRadius: 'var(--radius-lg)', display: 'block' }} />
-                ) : item.id === 3 ? (
-                  <video ref={realTimePencilVideoRef} src="/sneak-peeks/pencil.mp4" poster="/sneak-peeks/pencil.png" muted loop playsInline onMouseEnter={() => realTimePencilVideoRef.current?.play()} onMouseLeave={() => { const el = realTimePencilVideoRef.current; if (!el) return; el.pause(); el.currentTime = 0; el.load(); }} className="w-full" style={{ aspectRatio: '16/9', objectFit: 'cover', borderRadius: 'var(--radius-lg)', display: 'block' }} />
-                ) : (
-                  <div className="sneak-image" style={{ aspectRatio: '16/9', background: item.gradient }} />
-                )}
-                <p className="sneak-title">{item.title}</p>
-              </div>
-            ))}
-          </div>
-
+        {/* Row 3: 3 cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-[48px]">
+          {getRow(row3Ids).map((item) => renderCard(item))}
         </div>
       </div>
 
@@ -254,7 +281,7 @@ export default function SneakPeeksSection() {
             justifyContent: "center",
             padding: "var(--space-6)",
           }}
-          onClick={() => setActiveId(null)}
+          onClick={handleModalClose}
         >
           <div
             style={{
@@ -266,12 +293,15 @@ export default function SneakPeeksSection() {
               width: "90%",
               display: "flex",
               flexDirection: "column",
+              opacity: modalVisible ? 1 : 0,
+              transform: modalVisible ? "scale(1)" : "scale(0.97)",
+              transition: "opacity 150ms ease-out, transform 150ms ease-out",
             }}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close button */}
             <button
-              onClick={() => setActiveId(null)}
+              onClick={handleModalClose}
               style={{
                 position: "absolute",
                 top: "var(--space-4)",

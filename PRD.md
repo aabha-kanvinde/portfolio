@@ -515,11 +515,7 @@ The site should be fully usable on mobile. Build priority: desktop → mobile �
 | Item | Priority | Notes |
 |---|---|---|
 | Real email address | High | For "Say Hi" mailto link |
-| LinkedIn URL | High | For contact row |
-| Behance profile URL | High | For older work section |
 | Resume PDF | High | Drop in /public/resume.pdf |
-| Swatch Info case study images | High | Already available — organize into /public/images/case-studies/swatch-info/ |
-| Swatch Info written content | High | Problem, process, solution, impact |
 | About page personal bio | Medium | Draft provided above, needs personalizing |
 | About page side quest photos | Medium | Personal photos for the photo grid |
 | Instruct Edit case study | Low (V2) | Write when ready |

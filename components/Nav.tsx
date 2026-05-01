@@ -34,36 +34,9 @@ export default function Nav() {
       prevScrollY.current = 0;
       return;
     }
-
-    let rafId: number | null = null;
-
-    const onScroll = () => {
-      if (rafId !== null) return;
-      rafId = requestAnimationFrame(() => {
-        rafId = null;
-        const currentY = window.scrollY;
-        const prev = prevScrollY.current;
-
-        if (currentY === 0) {
-          setScrollState("atTop");
-        } else if (currentY > prev) {
-          setScrollState("hidden");
-        } else {
-          setScrollState("visible");
-        }
-
-        prevScrollY.current = currentY;
-      });
-    };
-
-    prevScrollY.current = window.scrollY;
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      if (rafId !== null) cancelAnimationFrame(rafId);
-    };
   }, [isCaseStudy, pathname]);
+
+  if (isCaseStudy) return null;
 
   const linkBase =
     "type-ui text-body transition-colors relative " +
@@ -81,17 +54,17 @@ export default function Nav() {
     right: 0,
     zIndex: 100,
     backgroundColor: (isCaseStudy && scrollState === "atTop") ? "transparent" : "var(--color-bg)",
-    ...(isCaseStudy && scrollState === "atTop" && {
+    ...(isCaseStudy && scrollState === "atTop" ? {
       backdropFilter: "none",
       borderBottom: "none",
       boxShadow: "none",
-    }),
+    } : {}),
     height: "64px",
     overflow: "visible",
-    ...(isCaseStudy && {
+    ...(isCaseStudy ? {
       transition: "background 150ms ease, top 300ms ease 50ms",
       willChange: "transform",
-    }),
+    } : {}),
   };
 
   return (
@@ -149,10 +122,10 @@ export default function Nav() {
       <style>{`
         .nav-inner { padding-inline: 24px; }
         @media (min-width: 768px) {
-          .nav-inner { padding-inline: 48px; }
+          .nav-inner { padding-inline: 24px; }
         }
         @media (min-width: 1024px) {
-          .nav-inner { padding-inline: 80px; }
+          .nav-inner { padding-inline: 24px; }
         }
       `}</style>
     </header>

@@ -8,11 +8,11 @@ export default function Footer() {
     <footer className="mt-auto border-t border-border">
       <div
         className="container"
-        style={{ paddingTop: "var(--space-9)", paddingBottom: "var(--space-6)" }}
+        style={{ paddingTop: "48px", paddingBottom: "16px", paddingLeft: "48px", paddingRight: "48px", maxWidth: "none" }}
       >
-        <div className="grid grid-cols-3 w-full gap-0 items-start" style={{ marginBottom: "var(--space-7)" }}>
+        <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-[var(--space-7)] md:gap-0 items-start" style={{ marginBottom: "var(--space-7)" }}>
           {/* Column 1 — CTA */}
-          <div className="col-span-2">
+          <div>
             <p
               style={{
                 fontFamily: "var(--font-baskerville), Georgia, serif",
@@ -47,7 +47,7 @@ export default function Footer() {
           </div>
 
           {/* Column 2 — Credits */}
-          <div className="col-span-1 flex flex-col items-end gap-1">
+          <div className="flex flex-col items-end gap-1">
             <p style={{ fontSize: 'var(--text-caption)', color: 'var(--color-muted)', fontFamily: 'var(--font-dm-sans)', textAlign: 'right' }}>
               Aabha Kanvinde © 2026
             </p>

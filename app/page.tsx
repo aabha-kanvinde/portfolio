@@ -9,13 +9,13 @@ export default function HomePage() {
     <>
       {/* ── Hero ──────────────────────────────────────────────────────── */}
       <section
-        className="container"
-        style={{ paddingTop: "var(--space-10)", paddingBottom: "var(--space-9)" }}
+        className="w-full max-w-[1200px] mx-auto px-4 md:px-[48px]"
+        style={{ paddingTop: "220px", paddingBottom: "220px" }}
       >
         <div
           className="mx-auto text-center"
           style={{
-            maxWidth: "640px",
+            maxWidth: "860px",
             fontFamily: "var(--font-baskerville), Georgia, serif",
             fontSize: "var(--text-h2)",
             lineHeight: "1.4",
@@ -23,18 +23,14 @@ export default function HomePage() {
             color: "var(--color-heading)",
           }}
         >
-          <p style={{ fontFamily: 'var(--font-baskerville)', fontSize: 'var(--text-h3)', fontWeight: 400, color: 'var(--color-heading)', textAlign: 'center', marginBottom: 'var(--space-5)' }}>
-            Hi! I&apos;m Aabha :)
+          <p style={{ fontFamily: 'var(--font-baskerville)', fontSize: 'var(--text-h3)', fontWeight: 400, color: 'var(--color-muted)', textAlign: 'center', marginBottom: 'var(--space-5)', letterSpacing: '0.01em'  }}>
+            Hi, I&apos;m Aabha :)
           </p>
           <h1 style={{ fontFamily: 'var(--font-baskerville)', fontSize: 'var(--text-h1)', fontWeight: 400, color: 'var(--color-heading)', textAlign: 'center', lineHeight: 1.2, marginBottom: 'var(--space-5)' }}>
             Currently at Adobe, designing tools used and loved by millions of other creatives.
           </h1>
-          <p style={{ fontFamily: 'var(--font-baskerville)', fontSize: 'var(--text-h2)', fontWeight: 400, color: 'var(--color-heading)', textAlign: 'center', lineHeight: 1.2, marginBottom: 'var(--space-5)' }}>
-            I think in systems, work in details and obsess over craft from both sides of the screen.
-          </p>
-          <p style={{ fontFamily: 'var(--font-dm-sans)', fontSize: 'var(--text-body-lg)', fontWeight: 400, color: 'var(--color-muted)', textAlign: 'center', marginBottom: 'var(--space-5)', letterSpacing: '0.02em' }}>
-            When I&apos;m not in Figma, you&apos;ll find me at the gym lifting heavy things<br />
-            or on the top of a mountain, petting a wild cow.
+          <p style={{ fontFamily: 'var(--font-dm-sans)', fontSize: 'var(--text-body-lg)', fontWeight: 300, color: 'var(--color-muted)', textAlign: 'center', marginBottom: 'var(--space-5)', letterSpacing: '0.01em' }}>
+          When I&apos;m not in Figma, you&apos;ll find me at the top of a mountain, petting a wild cow.<br />Powered by iced coffee and an unreasonable love for details.
           </p>
         </div>
 
@@ -49,10 +45,10 @@ export default function HomePage() {
             display: flex;
             flex-direction: column;
             gap: var(--space-7);
-            padding-inline: var(--space-6);
+            padding-inline: 16px;
           }
-          @media (min-width: 768px) { .case-study-grid { padding-inline: var(--space-8); } }
-          @media (min-width: 1024px) { .case-study-grid { padding-inline: var(--space-10); } }
+          @media (min-width: 768px) { .case-study-grid { padding-inline: 48px; } }
+          @media (min-width: 1024px) { .case-study-grid { padding-inline: 48px; } }
           .case-study-card { display: block; text-decoration: none; cursor: pointer; }
           .case-study-card-image {
             width: 100%;
@@ -94,24 +90,30 @@ export default function HomePage() {
           }
           .case-study-card-disabled:hover::after { opacity: 1; }
         `}</style>
-        <div className="container" style={{ marginBottom: "var(--space-7)", textAlign: "center" }}>
+        <div className="w-full max-w-[1200px] mx-auto px-4 md:px-[48px]" style={{ marginBottom: "var(--space-7)", textAlign: "center" }}>
           <SectionLabel>Deep Dives</SectionLabel>
         </div>
         <div className="case-study-grid">
           <Link href="/work/swatch-info" className="case-study-card">
-            <Image src="/swatch-info-project-images/newest-swatch main page thumbnail.png" alt="Simplified Color Documentation in Illustrator" width={1040} height={585} quality={90} className="w-full rounded-[var(--radius-lg)]" style={{aspectRatio: '16/6', objectFit: 'cover'}} />
-            <p className="case-study-card-title">Simplified Color Documentation in Illustrator</p>
+            <Image src="/swatch-info-project-images/correct-swatch main page thumbnail.png" alt="Simplified Color Documentation in Illustrator" width={1040} height={585} quality={90} className="w-full rounded-[var(--radius-lg)] hover:-translate-y-1 hover:shadow-[0_8px_24px_rgba(45,26,10,0.12)]" style={{aspectRatio: '16/6', objectFit: 'cover', transition: 'transform 200ms ease, box-shadow 200ms ease'}} />
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginTop: 'var(--space-3)' }}>
+              <p style={{ fontFamily: 'var(--font-dm-sans)', fontSize: 'var(--text-body)', color: 'var(--color-heading)', margin: 0 }}>Simplified Color Documentation in Illustrator</p>
+              <span style={{ fontFamily: 'var(--font-dm-sans)', fontSize: 'var(--text-body-sm)', color: 'var(--color-muted)', flexShrink: 0, marginLeft: 'var(--space-4)' }}>2025</span>
+            </div>
           </Link>
           <div className="case-study-card-disabled">
-            <Image src="/swatch-info-project-images/wip thumbnail.png" alt="Generative Edit" width={1040} height={585} quality={90} className="w-full rounded-[var(--radius-lg)]" style={{aspectRatio: '16/6', objectFit: 'cover'}} />
-            <p className="case-study-card-title">Generative Edit</p>
+            <Image src="/swatch-info-project-images/wip thumbnail.png" alt="Generative Edit" width={1040} height={585} quality={90} className="w-full rounded-[var(--radius-lg)] hover:-translate-y-1 hover:shadow-[0_8px_24px_rgba(45,26,10,0.12)]" style={{aspectRatio: '16/6', objectFit: 'cover', transition: 'transform 200ms ease, box-shadow 200ms ease'}} />
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginTop: 'var(--space-3)' }}>
+              <p style={{ fontFamily: 'var(--font-dm-sans)', fontSize: 'var(--text-body)', color: 'var(--color-heading)', margin: 0 }}>Generative Edit</p>
+              <span style={{ fontFamily: 'var(--font-dm-sans)', fontSize: 'var(--text-body-sm)', color: 'var(--color-muted)', flexShrink: 0, marginLeft: 'var(--space-4)' }}>2026</span>
+            </div>
           </div>
         </div>
       </section>
 
       {/* ── Sneak Peeks ─────────────────────────────────────────────── */}
       <section className="border-t border-border" style={{ paddingBlock: "var(--space-9)" }}>
-        <div className="container" style={{ marginBottom: "var(--space-7)", textAlign: "center" }}>
+        <div className="w-full max-w-[1200px] mx-auto px-4 md:px-[48px]" style={{ marginBottom: "var(--space-7)", textAlign: "center" }}>
           <SectionLabel>Sneak Peeks</SectionLabel>
         </div>
         <SneakPeeksSection />

@@ -239,7 +239,7 @@ function DesignExplorations() {
               {[
                 {
                   title: "Idea 01: Export Dialog",
-                  imgSrc: "/swatch-info-project-images/Export dialog 2.png",
+                  imgSrc: "/swatch-info-project-images/export-dialog-2.png",
                   imgAlt: "Export dialog as entry point exploration",
                   feedback: [
                     { type: "reject", text: "Limited to last mile" },
@@ -248,7 +248,7 @@ function DesignExplorations() {
                 },
                 {
                   title: "Idea 02: Quick Actions",
-                  imgSrc: "/swatch-info-project-images/Quick Actions.png",
+                  imgSrc: "/swatch-info-project-images/quick-actions-2.png",
                   imgAlt: "Quick actions as entry point exploration",
                   feedback: [
                     { type: "reject", text: "Difficult to infer intent just from selection" },
@@ -257,11 +257,11 @@ function DesignExplorations() {
                 },
                 {
                   title: "Idea 03: Swatches Panel",
-                  imgSrc: "/swatch-info-project-images/Swatches panel.png",
+                  imgSrc: "/swatch-info-project-images/swatches-panel-2.png",
                   imgAlt: "Swatches panel flyout as chosen entry point",
                   feedback: [
                     { type: "accept", text: "Familiar and flexible" },
-                    { type: "warn",   text: "Requires careful UI placement to avoid clutter" },
+                    { type: "warn",   text: "Requires careful placement to avoid clutter" },
                   ],
                 },
               ].map(({ title, imgSrc, imgAlt, feedback }) => (
@@ -481,6 +481,97 @@ function DesignExplorations() {
   );
 }
 
+// ─── Table of Contents ───────────────────────────────────────────────────────
+
+const TOC_ITEMS = [
+  { id: "context",             label: "Context" },
+  { id: "problem",             label: "Problem" },
+  { id: "design-explorations", label: "Design Explorations" },
+  { id: "solution",            label: "Solution" },
+  { id: "impact",              label: "Impact" },
+  { id: "reflections",         label: "Reflections" },
+];
+
+function TableOfContents() {
+  const [active, setActive] = React.useState("context");
+
+  React.useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        });
+      },
+      { threshold: 0, rootMargin: "-20% 0px -70% 0px" }
+    );
+    TOC_ITEMS.forEach(({ id }) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      className="toc-sidebar"
+      style={{
+        position: "sticky",
+        top: "88px",
+        alignSelf: "flex-start",
+        width: "200px",
+        flexShrink: 0,
+        display: "flex",
+        flexDirection: "column",
+        gap: "var(--space-4)",
+        paddingTop: "var(--space-8)",
+      }}
+    >
+      <Link
+        href="/"
+        style={{
+          fontFamily: "var(--font-dm-sans), system-ui, sans-serif",
+          fontSize: "var(--text-body-sm)",
+          color: "var(--color-muted)",
+          textDecoration: "none",
+          transition: "color var(--transition-fast)",
+          display: "block",
+          marginBottom: "var(--space-7)",
+        }}
+        onMouseEnter={(e) => (e.currentTarget.style.color = "var(--color-heading)")}
+        onMouseLeave={(e) => (e.currentTarget.style.color = "var(--color-muted)")}
+      >
+        ← Back
+      </Link>
+      {TOC_ITEMS.map(({ id, label }) => (
+        <button
+          key={id}
+          onClick={() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })}
+          style={{
+            background: "none",
+            border: "none",
+            borderLeft: active === id
+              ? "2px solid var(--color-heading)"
+              : "2px solid transparent",
+            padding: 0,
+            paddingLeft: "var(--space-3)",
+            cursor: "pointer",
+            textAlign: "left",
+            fontFamily: "var(--font-dm-sans), system-ui, sans-serif",
+            fontSize: "var(--text-ui)",
+            color: active === id ? "var(--color-heading)" : "var(--color-muted)",
+            fontWeight: active === id ? 600 : 400,
+            textDecoration: "none",
+            transition: "color var(--transition-fast)",
+            lineHeight: 1.4,
+          }}
+        >
+          {label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 // ─── Divider ─────────────────────────────────────────────────────────────────
 
 function Divider() {
@@ -501,7 +592,11 @@ function Divider() {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function SwatchInfoPage() {
-return (
+  React.useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, []);
+
+  return (
     <article style={{ marginTop: "calc(-1 * var(--space-8))" }}>
       {/* ── Section 1: Hero ──────────────────────────────────────────────── */}
       <style>{`
@@ -511,9 +606,9 @@ return (
         }
 
         .hero-title-wrapper {
-          position: absolute; top: 120px; left: 50%;
+          position: absolute; top: 72px; left: 50%;
           transform: translateX(-50%);
-          width: 90%; max-width: 800px;
+          width: 95%; max-width: 1100px;
           display: flex; flex-direction: column; align-items: center; gap: var(--space-3);
           text-align: center;
         }
@@ -522,15 +617,15 @@ return (
 
         .hero-title {
           font-family: var(--font-baskerville), Georgia, serif;
-          font-size: var(--text-h1); font-weight: 400; color: var(--color-heading);
-          line-height: 1.2; letter-spacing: -0.03em; margin: 0;
+          font-size: clamp(32px, 4vw, 54px); font-weight: 400; color: var(--color-heading);
+          line-height: 1.2; letter-spacing: 0.00 em; margin: 0;
         }
-        @media (max-width: 1023px) { .hero-title { font-size: var(--text-h3); } }
-        @media (max-width: 767px)  { .hero-title { font-size: var(--text-h4); } }
+        @media (max-width: 1023px) { .hero-title { font-size: var(--text-h2); } }
+        @media (max-width: 767px)  { .hero-title { font-size: var(--text-h3); } }
 
         /* ── Intro block ─────────────────────────────────────── */
-        .intro-block { display: flex; flex-direction: row; }
-        @media (max-width: 767px) { .intro-block { flex-direction: column; } }
+        .intro-block { display: flex; flex-direction: column; }
+        @media (min-width: 768px) { .intro-block { flex-direction: row; align-items: flex-start; } }
 
         .intro-meta { flex-shrink: 0; display: flex; gap: var(--space-7); flex-wrap: wrap; }
         @media (max-width: 767px) { .intro-meta { gap: var(--space-5); } }
@@ -604,10 +699,26 @@ return (
           .spec-feedback-grid > div { grid-column: auto !important; }
         }
 
-      `}</style>
+        /* ── Two-column case study layout ───────────────────── */
+        .case-study-layout {
+          display: flex;
+          flex-direction: row;
+          gap: 200px;
+          align-items: flex-start;
+        }
+        .toc-sidebar { display: flex; }
+        @media (max-width: 1023px) {
+          .case-study-layout { display: block; }
+          .toc-sidebar { display: none; }
+        }
+
+        /* ── Section scroll offset ───────────────────────────── */
+        .section-anchor { scroll-margin-top: 80px; }
+
+`}</style>
       <div style={{ position: "relative", width: "100%", overflow: "hidden" }}>
         <Image
-          src="/swatch-info-project-images/newest- swatch case study hero.png"
+          src="/swatch-info-project-images/correct-swatch case study hero.png"
           alt="Swatch Info feature hero"
           width={5424}
           height={2904}
@@ -628,8 +739,11 @@ return (
         </div>
       </div>
 
-      {/* Hero intro + metadata */}
-      <div className="container">
+      {/* Post-hero layout */}
+      <div className="container cs-page" style={{ paddingLeft: '24px', paddingRight: '24px' }}>
+        <div className="case-study-layout">
+          <TableOfContents />
+          <div className="cs-content" style={{ flex: 1, minWidth: 0 }}>
         <div
           className="intro-block"
           style={{
@@ -638,7 +752,7 @@ return (
             paddingBottom: "var(--space-9)",
           }}
         >
-          {/* Left: intro paragraph */}
+          {/* Intro paragraph */}
           <div style={{ flex: 1 }}>
             <p
               style={{
@@ -650,11 +764,13 @@ return (
               }}
             >
               Working with color seems simple… until all those color codes have
-              to be shared or documented. Through the{" "}
-              <em>Create Swatch Info</em> feature, I turned a manual,
-              error-prone process into a <strong>single, reliable in-app action</strong>. This
-              led to <strong>simplified color documentation workflows, from creation to
-              handoff.</strong>
+              to be shared or documented.
+              <br />
+              <br />
+              Through the <em>Create Swatch Info</em> feature, I turned a manual,
+              error-prone process into a single, reliable in-app action. This
+              led to simplified color documentation workflows, from creation to
+              handoff.
             </p>
           </div>
 
@@ -667,10 +783,10 @@ return (
               },
               {
                 label: "COLLABORATORS",
-                values: ["Design Manager", "Product Manager", "2 Engineers"],
+                values: ["Design Manager", "Product Manager", "Engineering Team"],
               },
               {
-                label: "TIMELINE",
+                label: "DURATION",
                 values: ["2 months"],
               },
             ].map(({ label, values }) => (
@@ -698,7 +814,8 @@ return (
 
         {/* ── Section 2: Context ─────────────────────────────────────────── */}
         <div
-          className="context-section"
+          id="context"
+          className="context-section section-anchor"
           style={{
             gap: "var(--space-9)",
             paddingTop: "var(--space-10)",
@@ -728,7 +845,7 @@ return (
 
           {/* Right: Swatch card */}
           <div className="context-swatch-wrapper">
-            <Image src="/swatch-info-project-images/Spec example 2.png" alt="Color spec card example" width={508} height={640} style={{width:'100%', height:'auto', borderRadius:'var(--radius-md)'}} quality={90} className="mx-auto" />
+            <Image src="/swatch-info-project-images/spec-example-3.png" alt="Color spec card example" width={508} height={640} style={{width:'100%', height:'auto', borderRadius:'var(--radius-md)'}} quality={90} className="mx-auto" />
             {/* TODO: add color spec card example image */}
           </div>
         </div>
@@ -737,6 +854,8 @@ return (
 
         {/* ── Section 3: Problem & Opportunity ─────────────────────────── */}
         <div
+          id="problem"
+          className="section-anchor"
           style={{
             paddingTop: "var(--space-10)",
             paddingBottom: "var(--space-10)",
@@ -745,180 +864,126 @@ return (
             gap: "var(--space-9)",
           }}
         >
-          {/* Header + Problem 1 */}
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            <div>
-              <span className="type-overline">PROBLEM &amp; OPPORTUNITY</span>
+          {/* Problems 1–3 wrapper — space-10 between blocks, space-4 within each */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-10)" }}>
+
+            {/* Problem 1 */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-4)" }}>
+              <div>
+                <span className="type-overline">PROBLEM</span>
+                <h2
+                  className="type-h2"
+                  style={{ marginTop: 0, marginBottom: 0, fontFamily: "var(--font-baskerville)", letterSpacing: 0 }}
+                >
+                  Color info was hidden and hard to structure.
+                </h2>
+              </div>
+              <p className="type-body" style={{ margin: 0 }}>
+                To create specs, designers had to manually check colors and copy values by hand, or rebuild specs in another tool.
+              </p>
+              <Image src="/swatch-info-project-images/Hidden info.png" alt="Color information hidden in Illustrator" width={2080} height={1170} style={{width:'100%', height:'auto', borderRadius:'var(--radius-md)'}} quality={90} />
+              <Image src="/swatch-info-project-images/copy example 3.png" alt="Manual color copying example" width={2080} height={1170} style={{width:'100%', height:'auto', borderRadius:'var(--radius-md)'}} quality={90} />
+            </div>
+
+            {/* Problem 2 */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-4)" }}>
               <h2
                 className="type-h2"
-                style={{ marginTop: 0, marginBottom: '16px', fontFamily: "var(--font-baskerville)", letterSpacing: 0 }}
+                style={{ marginTop: 0, marginBottom: 0, fontFamily: "var(--font-baskerville)", letterSpacing: 0 }}
               >
-                Sharing color specs is tedious and easy to mess up
+                Manual copying increases the chance of mistakes.
               </h2>
+              <p className="type-body" style={{ margin: 0 }}>
+                In print-critical workflows, even small errors have costly consequences.
+              </p>
+              <Image src="/swatch-info-project-images/copy example 2.png" alt="Copy example" width={2080} height={882} style={{width:'100%', height:'auto', borderRadius:'var(--radius-md)'}} quality={90} />
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-5)" }}>
-              <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-              <span
+
+            {/* Problem 3 */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-4)" }}>
+              <h2
+                className="type-h2"
+                style={{ marginTop: 0, marginBottom: 0, fontFamily: "var(--font-baskerville)", letterSpacing: 0 }}
+              >
+                One size doesn&apos;t fit all.
+              </h2>
+              <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+                <p
+                  className="type-caption"
+                  style={{ margin: 0, color: '#2D1A0A80' }}
+                >
+                  Sample files from user interviews with Daniela Venezia (Textile designer) and Kitty F. (Graphic, web &amp; textile designer)
+                </p>
+                <div className="user-type-grid" style={{ alignItems: "start" }}>
+                  <div className="grid grid-cols-2 gap-4 items-center md:flex md:flex-col-reverse">
+                    <p className="type-body" style={{ margin: 0 }}>
+                      <strong>Brand designers</strong> need Pantone and ink types clearly specified to ensure consistent branding.
+                    </p>
+                    <div>
+                      <Image src="/swatch-info-project-images/Brand designer.png" alt="Brand designer color spec needs" width={662} height={496} style={{width:'100%', height:'auto', borderRadius:'var(--radius-md)'}} quality={90} />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4 items-center md:flex md:flex-col-reverse">
+                    <p className="type-body" style={{ margin: 0 }}>
+                      <strong>Packaging designers</strong> need exhaustive detail for test prints.
+                    </p>
+                    <div>
+                      <Image src="/swatch-info-project-images/Packaging designer 2.png" alt="Packaging designer color spec needs" width={662} height={496} style={{width:'100%', height:'auto', borderRadius:'var(--radius-md)'}} quality={90} />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4 items-center md:flex md:flex-col-reverse">
+                    <p className="type-body" style={{ margin: 0 }}>
+                      <strong>Textile designers</strong> need color order and grouping. One wrong arrangement can make a full pattern unusable.
+                    </p>
+                    <div>
+                      <Image src="/swatch-info-project-images/Fashion designer.png" alt="Fashion designer color spec needs" width={662} height={496} style={{width:'100%', height:'auto', borderRadius:'var(--radius-md)'}} quality={90} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Opportunity callout + follow-on paragraph */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-5)" }}>
+            <div
+              style={{
+                borderLeft: "3px solid var(--color-border)",
+                paddingLeft: "var(--space-6)",
+              }}
+            >
+              <span className="type-overline">OPPORTUNITY</span>
+              <p
                 style={{
-                  fontFamily: "var(--font-dm-sans), system-ui, sans-serif",
-                  fontSize: '14px',
-                  color: '#2D1A0A80',
+                  fontFamily: "var(--font-baskerville), Georgia, serif",
+                  fontSize: "var(--text-quote)",
+                  fontStyle: "italic",
+                  color: "var(--color-heading)",
+                  lineHeight: "var(--leading-quote)",
+                  letterSpacing: "var(--tracking-quote)",
+                  margin: 0,
                 }}
               >
-                #1
-              </span>
-              <p className="type-body" style={{ margin: 0 }}>
-                Color information has always existed in Illustrator, but was
-                <strong> hidden and difficult to structure for handoff</strong>. To create specs,
-                designers had to manually check colors and copy values by hand, or
-                rebuild specs in another tool.
+                Instantly turn existing swatches into flexible, ready-to-share specs.
               </p>
-              </div>
-              <Image src="/swatch-info-project-images/Hidden info.png" alt="Color information hidden in Illustrator" width={2080} height={1170} style={{width:'100%', height:'auto', borderRadius:'var(--radius-md)'}} quality={90} />
             </div>
-          </div>
 
-          {/* Problem 2 */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-5)" }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-            <span
-              style={{
-                fontFamily: "var(--font-dm-sans), system-ui, sans-serif",
-                fontSize: '14px',
-                color: '#2D1A0A80',
-              }}
-            >
-              #2
-            </span>
             <p className="type-body" style={{ margin: 0 }}>
-              Manually copying color values increases the <strong>chance of mistakes</strong>. In
-              large files or print-critical workflows, even small errors have
-              costly consequences.
-            </p>
-            </div>
-            <Image src="/swatch-info-project-images/copy example 2.png" alt="Copy example" width={2080} height={882} style={{width:'100%', height:'auto', borderRadius:'var(--radius-md)'}} quality={90} />
-          </div>
-
-          {/* Problem 3 */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-5)" }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-            <span
-              style={{
-                fontFamily: "var(--font-dm-sans), system-ui, sans-serif",
-                fontSize: '14px',
-                color: '#2D1A0A80',
-              }}
-            >
-              #3
-            </span>
-            <p className="type-body" style={{ margin: 0 }}>
-              The problem looked different depending on who I was designing for:
-            </p>
-            </div>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-            <p
-              className="type-caption"
-              style={{ margin: 0, color: '#2D1A0A80' }}
-            >
-              Sample files from user interviews with Daniela Venezia (Textile designer) and Kitty F. (Graphic, web &amp; textile designer)
-            </p>
-
-            <div className="user-type-grid">
-              <div className="grid grid-cols-2 gap-4 items-center md:flex md:flex-col-reverse md:h-full">
-                <p className="type-body" style={{ margin: 0 }}>
-                  <strong>Brand designers</strong> need Pantone and ink types clearly specified to ensure consistent branding.
-                </p>
-                <div className="md:flex-1 md:min-h-0">
-                  <Image src="/swatch-info-project-images/Brand designer.png" alt="Brand designer color spec needs" width={662} height={496} style={{width:'100%', height:'auto', borderRadius:'var(--radius-md)'}} quality={90} />
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4 items-center md:flex md:flex-col-reverse md:h-full">
-                <p className="type-body" style={{ margin: 0 }}>
-                  <strong>Packaging designers</strong> need exhaustive detail for test prints.
-                </p>
-                <div className="md:flex-1 md:min-h-0">
-                  <Image src="/swatch-info-project-images/Packaging designer 2.png" alt="Packaging designer color spec needs" width={662} height={496} style={{width:'100%', height:'auto', borderRadius:'var(--radius-md)'}} quality={90} />
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4 items-center md:flex md:flex-col-reverse md:h-full">
-                <p className="type-body" style={{ margin: 0 }}>
-                  <strong>Textile designers</strong> need color order and grouping. One wrong arrangement can make a full pattern unusable.
-                </p>
-                <div className="md:flex-1 md:min-h-0">
-                  <Image src="/swatch-info-project-images/Fashion designer.png" alt="Fashion designer color spec needs" width={662} height={496} style={{width:'100%', height:'auto', borderRadius:'var(--radius-md)'}} quality={90} />
-                </div>
-              </div>
-            </div>
-            </div>
-          </div>
-
-          {/* Problem Statement callout */}
-          <div style={{
-            borderLeft: '3px solid var(--color-border)',
-            paddingLeft: 'var(--space-6)',
-          }}>
-            <p style={{
-              fontFamily: 'var(--font-dm-sans)',
-              fontSize: 'var(--text-overline)',
-              fontWeight: 600,
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              color: 'rgba(44, 42, 39, 0.5)',
-              marginBottom: 'var(--space-3)'
-            }}>
-              PROBLEM
-            </p>
-            <p style={{
-              fontFamily: 'var(--font-baskerville)',
-              fontSize: 'var(--text-quote)',
-              fontStyle: 'italic',
-              lineHeight: 1.35,
-              letterSpacing: '-0.02em',
-              color: 'var(--color-heading)',
-              margin: 0
-            }}>
-              Color data was hidden inside tools. Extracting it was tedious, error-prone, and a different nightmare for every type of designer.
+              Color data already lived in Illustrator in the form of swatches. I
+              decided to <strong>design around this existing structure</strong> rather than
+              introduce new concepts, which meant the solution could feel native
+              to the app from day one.
             </p>
           </div>
-
-          <Image src="/swatch-info-project-images/copy example 3.png" alt="Manual color copying example" width={2080} height={1170} style={{width:'100%', height:'auto', borderRadius:'var(--radius-md)'}} quality={90} />
-
-          {/* Opportunity callout */}
-          <div
-            style={{
-              borderLeft: "3px solid var(--color-border)",
-              paddingLeft: "var(--space-6)",
-            }}
-          >
-            <span className="type-overline">OPPORTUNITY</span>
-            <p
-              style={{
-                fontFamily: "var(--font-baskerville), Georgia, serif",
-                fontSize: "var(--text-quote)",
-                fontStyle: "italic",
-                color: "var(--color-heading)",
-                lineHeight: "var(--leading-quote)",
-                letterSpacing: "var(--tracking-quote)",
-                margin: 0,
-              }}
-            >
-              Instantly turn existing swatches into flexible, ready-to-share specs.
-            </p>
-          </div>
-
-          <p className="type-body" style={{ margin: 0 }}>
-            Color data already lived in Illustrator in the form of swatches. I
-            decided to <strong>design around this existing structure</strong> rather than
-            introduce new concepts, which meant the solution could feel native
-            to the app from day one.
-          </p>
         </div>
 
         <Divider />
 
         {/* ── Section 5: Design Explorations ────────────────────────────── */}
         <div
+          id="design-explorations"
+          className="section-anchor"
           style={{
             paddingTop: "var(--space-10)",
             paddingBottom: "var(--space-10)",
@@ -945,6 +1010,8 @@ return (
 
         {/* ── Section 6: Solution ───────────────────────────────────────── */}
         <div
+          id="solution"
+          className="section-anchor"
           style={{
             paddingTop: "var(--space-10)",
             paddingBottom: "var(--space-10)",
@@ -962,19 +1029,21 @@ return (
               Fast, accurate spec generation (no more copy-paste!)
             </h2>
             <p className="type-body" style={{ margin: 0 }}>
-              This feature turned a manual, error-prone workaround into a single, reliable in-app action. Instead of reconstructing color specs by hand, designers now generate structured documentation instantly, straight from the source of truth.
+              Instead of reconstructing color specs by hand, designers now generate structured documentation instantly, straight from the source of truth.
             </p>
           </div>
 
-          {/* TODO: replace with actual video embed */}
           {[
-            { src: '/videos/swatchdemo-step1.mp4', label: 'Select the colors that already live in the Swatches panel' },
-            { src: '/videos/swatchdemo-step2.mp4', label: 'Find "Create Swatch Info" in the panel menu' },
-            { src: '/videos/swatchdemo-step3.mp4', label: 'Adjust settings and hit "Create"' },
-            { src: '/videos/swatchdemo-step4.mp4', label: 'Specs appear instantly at the center of the viewport — ready to share!' },
+            { src: '/videos/swatch-step1.mp4', label: 'Select the colors that already live in the Swatches panel' },
+            { src: '/videos/swatch-step2.mp4', label: 'Find "Create Swatch Info" in the panel menu' },
+            { src: '/videos/swatch-step3.mp4', label: 'Adjust settings and hit "Create"' },
           ].map(({ src, label }, index) => (
             <StepVideo key={index} src={src} label={label} />
           ))}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)', marginBottom: 'var(--space-8)' }}>
+            <p style={{ fontSize: '14px', color: '#2D1A0A80', margin: 0 }}>Specs appear instantly at the center of the viewport, ready to share!</p>
+            <Image src="/swatch-info-project-images/swatch-step4.png" alt="Specs appear instantly at the center of the viewport" width={2080} height={1170} style={{ width: '100%', height: 'auto', borderRadius: 'var(--radius-md)' }} quality={90} />
+          </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-5)" }}>
             <p className="type-body" style={{ margin: 0 }}>
@@ -990,6 +1059,8 @@ return (
 
         {/* ── Section 7: Impact ─────────────────────────────────────────── */}
         <div
+          id="impact"
+          className="section-anchor"
           style={{
             paddingTop: "var(--space-10)",
             paddingBottom: "var(--space-10)",
@@ -1064,6 +1135,8 @@ return (
 
         {/* ── Section 8: Reflections ────────────────────────────────────── */}
         <div
+          id="reflections"
+          className="section-anchor"
           style={{
             paddingTop: "var(--space-10)",
             paddingBottom: "var(--space-10)",
@@ -1113,7 +1186,7 @@ return (
                 </span>
                 <h4
                   className="type-h4"
-                  style={{ marginBottom: "var(--space-3)", marginTop: 0 }}
+                  style={{ marginBottom: "var(--space-3)", marginTop: 0, fontFamily: "var(--font-dm-sans), system-ui, sans-serif", fontWeight: 500 }}
                 >
                   {heading}
                 </h4>
@@ -1125,31 +1198,8 @@ return (
           </div>
         </div>
 
-        {/* ── Bottom nav ────────────────────────────────────────────────── */}
-        <div
-          style={{
-            paddingBottom: "var(--space-9)",
-          }}
-        >
-          <Link
-            href="/"
-            style={{
-              fontFamily: "var(--font-dm-sans), system-ui, sans-serif",
-              fontSize: "var(--text-body-sm)",
-              color: "var(--color-muted)",
-              textDecoration: "none",
-              transition: "color var(--transition-fast)",
-            }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.color = "var(--color-heading)")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.color = "var(--color-muted)")
-            }
-          >
-            ← Back to Work
-          </Link>
-        </div>
+          </div>{/* end content column */}
+        </div>{/* end case-study-layout */}
       </div>
     </article>
   );

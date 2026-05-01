@@ -205,6 +205,10 @@ strong, b {
   color: var(--color-heading);
 }
 
+h1, h2, h3, h4 {
+  color: var(--color-heading);
+}
+
 /* ─── Typography utility classes ────────────────────────────────────── */
 
 .type-display {
@@ -396,3 +400,12 @@ strong, b {
     padding-inline: var(--space-10);
   }
 }
+
+/* ─── Case study page padding override ──────────────────────────────────── */
+.container.cs-page { padding-inline: var(--space-5); max-width: 1600px; }
+@media (min-width: 768px)  { .container.cs-page { padding-inline: var(--space-5); } }
+@media (min-width: 1024px) { .container.cs-page { padding-inline: var(--space-5); } }
+
+/* ─── Case study content column ─────────────────────────────────────────── */
+.cs-content { padding-right: 0; }
+@media (min-width: 1024px) { .cs-content { padding-right: 200px; } }

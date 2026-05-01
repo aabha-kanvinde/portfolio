@@ -6,11 +6,11 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Aabha — Product Designer",
   description:
-    "Portfolio of Aabha, a product designer at Adobe creating tools for other creatives.",
+    "Portfolio of a product designer at Adobe, creating tools for other creatives.",
   openGraph: {
-    title: "Aabha — Product Designer",
+    title: "Aabha's Portfolio",
     description:
-      "Portfolio of Aabha, a product designer at Adobe creating tools for other creatives.",
+      "Portfolio of a product designer at Adobe creating tools for other creatives.",
     type: "website",
   },
 };

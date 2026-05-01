@@ -54,11 +54,11 @@ export default function Nav() {
     right: 0,
     zIndex: 100,
     backgroundColor: (isCaseStudy && scrollState === "atTop") ? "transparent" : "var(--color-bg)",
-    ...(isCaseStudy && scrollState === "atTop" && {
+    ...(isCaseStudy && scrollState === "atTop" ? {
       backdropFilter: "none",
       borderBottom: "none",
       boxShadow: "none",
-    }),
+    } : {}),
     height: "64px",
     overflow: "visible",
     ...(isCaseStudy && {

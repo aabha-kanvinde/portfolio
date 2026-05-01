@@ -61,10 +61,10 @@ export default function Nav() {
     } : {}),
     height: "64px",
     overflow: "visible",
-    ...(isCaseStudy && {
+    ...(isCaseStudy ? {
       transition: "background 150ms ease, top 300ms ease 50ms",
       willChange: "transform",
-    }),
+    } : {}),
   };
 
   return (

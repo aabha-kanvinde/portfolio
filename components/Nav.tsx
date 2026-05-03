@@ -9,9 +9,11 @@ type NavScrollState = "atTop" | "hidden" | "visible";
 export default function Nav() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrollState, setScrollState] = useState<NavScrollState>("atTop");
+  const [visible, setVisible] = useState(true);
   const pathname = usePathname();
   const menuRef = useRef<HTMLDivElement>(null);
   const prevScrollY = useRef(0);
+  const lastScrollY = useRef(0);
 
   const isCaseStudy = pathname.startsWith("/work/");
 
@@ -36,6 +38,22 @@ export default function Nav() {
     }
   }, [isCaseStudy, pathname]);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY < 10) {
+        setVisible(true);
+      } else if (currentScrollY > lastScrollY.current) {
+        setVisible(false);
+      } else {
+        setVisible(true);
+      }
+      lastScrollY.current = currentScrollY;
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   if (isCaseStudy) return null;
 
   const linkBase =
@@ -53,18 +71,21 @@ export default function Nav() {
     left: 0,
     right: 0,
     zIndex: 100,
-    backgroundColor: (isCaseStudy && scrollState === "atTop") ? "transparent" : "var(--color-bg)",
+    background: (isCaseStudy && scrollState === "atTop") ? "transparent" : "rgba(248, 248, 246, 0.80)",
+    backdropFilter: (isCaseStudy && scrollState === "atTop") ? "none" : "blur(8px)",
     ...(isCaseStudy && scrollState === "atTop" ? {
-      backdropFilter: "none",
       borderBottom: "none",
       boxShadow: "none",
     } : {}),
     height: "64px",
     overflow: "visible",
+    transform: visible ? "translateY(0)" : "translateY(-100%)",
     ...(isCaseStudy ? {
       transition: "background 150ms ease, top 300ms ease 50ms",
       willChange: "transform",
-    } : {}),
+    } : {
+      transition: "transform 300ms ease",
+    }),
   };
 
   return (

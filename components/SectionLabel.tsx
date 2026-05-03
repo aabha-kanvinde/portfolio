@@ -5,6 +5,6 @@ interface SectionLabelProps {
 
 export default function SectionLabel({ children, className = "" }: SectionLabelProps) {
   return (
-    <span className={`type-overline ${className}`}>{children}</span>
+    <h2 className={`type-overline ${className}`}>{children}</h2>
   );
 }

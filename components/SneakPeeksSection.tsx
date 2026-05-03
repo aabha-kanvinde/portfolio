@@ -30,7 +30,7 @@ const items: SneakPeek[] = [
     feature: "Real-Time Pencil with Live Curve Fitting",
     shipped: "July 2025",
     stat: "61% adoption one month after release.",
-    description: "The old Pencil tool only rendered smoothing and effects after you stopped drawing. Every stroke was a guess. This feature changed that completely by giving real-time feedback to users as they draw. The main challenge for me with this project was onboarding — how do you get designers with years of existing habits to actually discover and trust something new in a tool they already feel comfortable with?",
+    description: "The old Pencil tool only rendered effects after you stopped drawing. Every stroke was a guess. This feature changed that completely by giving real-time feedback to users as they draw. The main challenge was onboarding- how do you get designers with years of existing habits to actually discover and trust something new in a tool they already feel comfortable with?",
     gradient: "linear-gradient(135deg, #E8C4B8 0%, #B8D4C4 100%)",
     aspectRatio: "4/3",
   },
@@ -86,7 +86,7 @@ const items: SneakPeek[] = [
   },
   {
     id: 1,
-    title: "Revamped homescreen to jumpstart the creative process with Firefly",
+    title: "Revamped homescreen to jumpstart creation with Firefly",
     feature: "Homescreen redesign X Firefly",
     shipped: "May 2026",
     stat: "Cross-product initiative within a 2-week sprint window.",
@@ -185,19 +185,19 @@ export default function SneakPeeksSection() {
         // eslint-disable-next-line @next/next/no-img-element
         return <img src="/sneak-peeks/aiXff.png" alt="" style={mediaStyle} />;
       case 2:
-        return <video ref={fireflyVideoRef} src="/sneak-peeks/IllustratorXFireflyBoards.mp4" poster="/sneak-peeks/AiXFFBoards.png" muted loop playsInline style={mediaStyle} />;
+        return <video ref={fireflyVideoRef} src="/sneak-peeks/IllustratorXFireflyBoards.mp4" poster="/sneak-peeks/AiXFFBoards.png" muted loop playsInline aria-label={item.title} style={mediaStyle} />;
       case 3:
-        return <video ref={realTimePencilVideoRef} src="/sneak-peeks/pencil.mp4" poster="/sneak-peeks/pencil.png" muted loop playsInline style={mediaStyle} />;
+        return <video ref={realTimePencilVideoRef} src="/sneak-peeks/pencil.mp4" poster="/sneak-peeks/pencil.png" muted loop playsInline aria-label={item.title} style={mediaStyle} />;
       case 4:
-        return <video ref={gradientPresetsVideoRef} src="/sneak-peeks/gradient-presets-2.mp4" poster="/sneak-peeks/presets2.png" muted loop playsInline style={mediaStyle} />;
+        return <video ref={gradientPresetsVideoRef} src="/sneak-peeks/gradient-presets-2.mp4" poster="/sneak-peeks/presets2.png" muted loop playsInline aria-label={item.title} style={mediaStyle} />;
       case 5:
-        return <video ref={gradientSuggestionsVideoRef} src="/sneak-peeks/gradient-suggestions-2.mp4" poster="/sneak-peeks/suggestions2.png" muted loop playsInline style={mediaStyle} />;
+        return <video ref={gradientSuggestionsVideoRef} src="/sneak-peeks/gradient-suggestions-2.mp4" poster="/sneak-peeks/suggestions2.png" muted loop playsInline aria-label={item.title} style={mediaStyle} />;
       case 6:
-        return <video ref={alignCenterVideoRef} src="/sneak-peeks/align-center.mp4" poster="/sneak-peeks/align2.png" muted loop playsInline style={mediaStyle} />;
+        return <video ref={alignCenterVideoRef} src="/sneak-peeks/align-center.mp4" poster="/sneak-peeks/align2.png" muted loop playsInline aria-label={item.title} style={mediaStyle} />;
       case 7:
-        return <video ref={searchPreferencesVideoRef} src="/sneak-peeks/search-preferences.mp4" poster="/sneak-peeks/search-preferences.png" muted loop playsInline style={mediaStyle} />;
+        return <video ref={searchPreferencesVideoRef} src="/sneak-peeks/search-preferences.mp4" poster="/sneak-peeks/search-preferences.png" muted loop playsInline aria-label={item.title} style={mediaStyle} />;
       case 9:
-        return <video ref={ungroupAllVideoRef} src="/sneak-peeks/ungroup-all-2.mp4" poster="/sneak-peeks/ungroup-all.png" muted loop playsInline style={mediaStyle} />;
+        return <video ref={ungroupAllVideoRef} src="/sneak-peeks/ungroup-all-2.mp4" poster="/sneak-peeks/ungroup-all.png" muted loop playsInline aria-label={item.title} style={mediaStyle} />;
       default:
         return <div style={{ width: "100%", aspectRatio: "16/9", background: item.gradient, display: "block" }} />;
     }
@@ -215,7 +215,7 @@ export default function SneakPeeksSection() {
       >
         <div
           style={{
-            borderRadius: "var(--radius-lg)",
+            borderRadius: 0,
             overflow: "hidden",
             width: "100%",
             aspectRatio: "16/9",
@@ -226,7 +226,7 @@ export default function SneakPeeksSection() {
         >
           {renderCardMedia(item)}
         </div>
-        <p
+        <h3
           style={{
             margin: "var(--space-3) 0 0 0",
             fontFamily: "var(--font-dm-sans)",
@@ -236,7 +236,7 @@ export default function SneakPeeksSection() {
           }}
         >
           {item.title}
-        </p>
+        </h3>
       </div>
     );
   }
@@ -251,19 +251,19 @@ export default function SneakPeeksSection() {
         @media (min-width: 1024px) { .sneak-columns { padding-inline: 48px; } }
       `}</style>
 
-      <div className="sneak-columns" style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+      <div className="sneak-columns gap-8 md:gap-[72px]" style={{ display: "flex", flexDirection: "column" }}>
         {/* Row 1: 2 cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-[48px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-[72px]">
           {getRow(row1Ids).map((item) => renderCard(item))}
         </div>
 
         {/* Row 2: 3 cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-[48px]">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-[72px]">
           {getRow(row2Ids).map((item) => renderCard(item))}
         </div>
 
         {/* Row 3: 3 cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-[48px]">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-[72px]">
           {getRow(row3Ids).map((item) => renderCard(item))}
         </div>
       </div>

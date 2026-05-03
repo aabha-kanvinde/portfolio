@@ -87,7 +87,7 @@ function SwatchReelVideo() {
       muted
       playsInline
       controls
-      className="w-full rounded-[var(--radius-lg)]"
+      className="w-full"
     />
   );
 }
@@ -122,7 +122,7 @@ function LivestreamVideo() {
       muted
       playsInline
       controls
-      className="w-full rounded-[var(--radius-lg)]"
+      className="w-full"
     />
   );
 }
@@ -153,8 +153,8 @@ function StepVideo({ src, label }: { src: string; label: string }) {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)', marginBottom: 'var(--space-8)' }}>
-      <p style={{ fontSize: '14px', color: '#2D1A0A80', margin: 0 }}>{label}</p>
-      <div style={{ position: 'relative', width: '100%', borderRadius: 'var(--radius-md)', overflow: 'hidden' }}>
+      <p style={{ fontSize: '14px', color: 'var(--color-muted)', margin: 0 }}>{label}</p>
+      <div style={{ position: 'relative', width: '100%', overflow: 'hidden' }}>
         <video ref={videoRef} loop muted playsInline style={{ width: '100%', height: 'auto', display: 'block' }}>
           <source src={src} type="video/mp4" />
         </video>
@@ -187,7 +187,7 @@ function DesignExplorations() {
     <div>
       <p className="text-center mb-6" style={{
         fontSize: 'var(--text-caption)',
-        color: 'var(--color-muted)',
+        color: 'var(--color-body)',
         letterSpacing: '0.12em',
         textTransform: 'uppercase',
         fontFamily: 'var(--font-dm-sans)',
@@ -277,7 +277,7 @@ function DesignExplorations() {
                     {title}
                   </span>
 
-                  <Image src={imgSrc} alt={imgAlt} width={662} height={882} style={{width:'100%', height:'auto', borderRadius:'var(--radius-md)'}} quality={90} />
+                  <Image src={imgSrc} alt={imgAlt} width={662} height={882} style={{width:'100%', height:'auto'}} quality={90} />
 
                   {feedback.map(({ type, text }, i) => (
                     <div
@@ -343,7 +343,7 @@ function DesignExplorations() {
                     >
                       {label}
                     </span>
-                    <Image src={imgSrc} alt={imgAlt} width={662} height={882} style={{width:'100%', height:'auto', borderRadius:'var(--radius-md)'}} quality={90} />
+                    <Image src={imgSrc} alt={imgAlt} width={662} height={882} style={{width:'100%', height:'auto'}} quality={90} />
                   </div>
                 )
               )}
@@ -360,8 +360,8 @@ function DesignExplorations() {
 
             {/* Two images */}
             <div className="grid grid-cols-2" style={{ gap: "var(--space-5)" }}>
-              <Image src="/swatch-info-project-images/sketch dialog.png" alt="Initial dialog wireframe exploration" width={1016} height={640} style={{width:'100%', height:'auto', borderRadius:'var(--radius-md)'}} quality={90} />
-              <Image src="/swatch-info-project-images/final dialog.png" alt="Final Create Swatch Info dialog design" width={1016} height={640} style={{width:'100%', height:'auto', borderRadius:'var(--radius-md)'}} quality={90} />
+              <Image src="/swatch-info-project-images/sketch dialog.png" alt="Initial dialog wireframe exploration" width={1016} height={640} style={{width:'100%', height:'auto'}} quality={90} />
+              <Image src="/swatch-info-project-images/final dialog.png" alt="Final Create Swatch Info dialog design" width={1016} height={640} style={{width:'100%', height:'auto'}} quality={90} />
             </div>
           </div>
         )}
@@ -391,7 +391,7 @@ function DesignExplorations() {
                     >
                       {label}
                     </span>
-                    <Image src={imgSrc} alt={imgAlt} width={484} height={646} style={{width:'100%', height:'auto', borderRadius:'var(--radius-md)'}} quality={90} />
+                    <Image src={imgSrc} alt={imgAlt} width={484} height={646} style={{width:'100%', height:'auto'}} quality={90} />
                   </div>
                   {i === 2 && (
                     <div className="flex md:hidden" style={{ gap: "var(--space-3)", alignItems: "flex-start", padding: "var(--space-3) var(--space-4)", borderRadius: "var(--radius-md)", background: "rgba(255, 222, 223, 0.5)" }}>
@@ -470,7 +470,7 @@ function DesignExplorations() {
                   >
                     {label}
                   </span>
-                  <Image src={imgSrc} alt={imgAlt} width={1016} height={640} style={{width:'100%', height:'auto', borderRadius:'var(--radius-md)'}} quality={90} />
+                  <Image src={imgSrc} alt={imgAlt} width={1016} height={640} style={{width:'100%', height:'auto'}} quality={90} />
                 </div>
               ))}
             </div>
@@ -518,7 +518,7 @@ function TableOfContents() {
         position: "sticky",
         top: "88px",
         alignSelf: "flex-start",
-        width: "200px",
+        width: "var(--space-10)",
         flexShrink: 0,
         display: "flex",
         flexDirection: "column",
@@ -703,7 +703,7 @@ export default function SwatchInfoPage() {
         .case-study-layout {
           display: flex;
           flex-direction: row;
-          gap: 200px;
+          gap: var(--space-8);
           align-items: flex-start;
         }
         .toc-sidebar { display: flex; }
@@ -740,7 +740,7 @@ export default function SwatchInfoPage() {
       </div>
 
       {/* Post-hero layout */}
-      <div className="container cs-page" style={{ paddingLeft: '24px', paddingRight: '24px' }}>
+      <div className="container cs-page" style={{ paddingLeft: '48px', paddingRight: '48px' }}>
         <div className="case-study-layout">
           <TableOfContents />
           <div className="cs-content" style={{ flex: 1, minWidth: 0 }}>
@@ -845,7 +845,7 @@ export default function SwatchInfoPage() {
 
           {/* Right: Swatch card */}
           <div className="context-swatch-wrapper">
-            <Image src="/swatch-info-project-images/spec-example-3.png" alt="Color spec card example" width={508} height={640} style={{width:'100%', height:'auto', borderRadius:'var(--radius-md)'}} quality={90} className="mx-auto" />
+            <Image src="/swatch-info-project-images/spec-example-3.png" alt="Color spec card example" width={508} height={640} style={{width:'100%', height:'auto'}} quality={90} className="mx-auto" />
             {/* TODO: add color spec card example image */}
           </div>
         </div>
@@ -881,8 +881,8 @@ export default function SwatchInfoPage() {
               <p className="type-body" style={{ margin: 0 }}>
                 To create specs, designers had to manually check colors and copy values by hand, or rebuild specs in another tool.
               </p>
-              <Image src="/swatch-info-project-images/Hidden info.png" alt="Color information hidden in Illustrator" width={2080} height={1170} style={{width:'100%', height:'auto', borderRadius:'var(--radius-md)'}} quality={90} />
-              <Image src="/swatch-info-project-images/copy example 3.png" alt="Manual color copying example" width={2080} height={1170} style={{width:'100%', height:'auto', borderRadius:'var(--radius-md)'}} quality={90} />
+              <Image src="/swatch-info-project-images/Hidden info.png" alt="Color information hidden in Illustrator" width={2080} height={1170} style={{width:'100%', height:'auto'}} quality={90} />
+              <Image src="/swatch-info-project-images/copy example 3.png" alt="Manual color copying example" width={2080} height={1170} style={{width:'100%', height:'auto'}} quality={90} />
             </div>
 
             {/* Problem 2 */}
@@ -896,7 +896,7 @@ export default function SwatchInfoPage() {
               <p className="type-body" style={{ margin: 0 }}>
                 In print-critical workflows, even small errors have costly consequences.
               </p>
-              <Image src="/swatch-info-project-images/copy example 2.png" alt="Copy example" width={2080} height={882} style={{width:'100%', height:'auto', borderRadius:'var(--radius-md)'}} quality={90} />
+              <Image src="/swatch-info-project-images/copy example 2.png" alt="Copy example" width={2080} height={882} style={{width:'100%', height:'auto'}} quality={90} />
             </div>
 
             {/* Problem 3 */}
@@ -910,7 +910,7 @@ export default function SwatchInfoPage() {
               <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
                 <p
                   className="type-caption"
-                  style={{ margin: 0, color: '#2D1A0A80' }}
+                  style={{ margin: 0, color: 'var(--color-muted)' }}
                 >
                   Sample files from user interviews with Daniela Venezia (Textile designer) and Kitty F. (Graphic, web &amp; textile designer)
                 </p>
@@ -920,7 +920,7 @@ export default function SwatchInfoPage() {
                       <strong>Brand designers</strong> need Pantone and ink types clearly specified to ensure consistent branding.
                     </p>
                     <div>
-                      <Image src="/swatch-info-project-images/Brand designer.png" alt="Brand designer color spec needs" width={662} height={496} style={{width:'100%', height:'auto', borderRadius:'var(--radius-md)'}} quality={90} />
+                      <Image src="/swatch-info-project-images/Brand designer.png" alt="Brand designer color spec needs" width={662} height={496} style={{width:'100%', height:'auto'}} quality={90} />
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-4 items-center md:flex md:flex-col-reverse">
@@ -928,7 +928,7 @@ export default function SwatchInfoPage() {
                       <strong>Packaging designers</strong> need exhaustive detail for test prints.
                     </p>
                     <div>
-                      <Image src="/swatch-info-project-images/Packaging designer 2.png" alt="Packaging designer color spec needs" width={662} height={496} style={{width:'100%', height:'auto', borderRadius:'var(--radius-md)'}} quality={90} />
+                      <Image src="/swatch-info-project-images/Packaging designer 2.png" alt="Packaging designer color spec needs" width={662} height={496} style={{width:'100%', height:'auto'}} quality={90} />
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-4 items-center md:flex md:flex-col-reverse">
@@ -936,7 +936,7 @@ export default function SwatchInfoPage() {
                       <strong>Textile designers</strong> need color order and grouping. One wrong arrangement can make a full pattern unusable.
                     </p>
                     <div>
-                      <Image src="/swatch-info-project-images/Fashion designer.png" alt="Fashion designer color spec needs" width={662} height={496} style={{width:'100%', height:'auto', borderRadius:'var(--radius-md)'}} quality={90} />
+                      <Image src="/swatch-info-project-images/Fashion designer.png" alt="Fashion designer color spec needs" width={662} height={496} style={{width:'100%', height:'auto'}} quality={90} />
                     </div>
                   </div>
                 </div>
@@ -1041,8 +1041,8 @@ export default function SwatchInfoPage() {
             <StepVideo key={index} src={src} label={label} />
           ))}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)', marginBottom: 'var(--space-8)' }}>
-            <p style={{ fontSize: '14px', color: '#2D1A0A80', margin: 0 }}>Specs appear instantly at the center of the viewport, ready to share!</p>
-            <Image src="/swatch-info-project-images/swatch-step4.png" alt="Specs appear instantly at the center of the viewport" width={2080} height={1170} style={{ width: '100%', height: 'auto', borderRadius: 'var(--radius-md)' }} quality={90} />
+            <p style={{ fontSize: '14px', color: 'var(--color-muted)', margin: 0 }}>Specs appear instantly at the center of the viewport, ready to share!</p>
+            <Image src="/swatch-info-project-images/swatch-step4.png" alt="Specs appear instantly at the center of the viewport" width={2080} height={1170} style={{ width: '100%', height: 'auto' }} quality={90} />
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-5)" }}>
@@ -1051,7 +1051,7 @@ export default function SwatchInfoPage() {
             </p>
           </div>
 
-          <Image src="/swatch-info-project-images/Swatch card pattern.png" alt="Swatch card variants across branding, print, textile and digital use cases" width={2080} height={1170} style={{width:'100%', height:'auto', borderRadius:'var(--radius-md)'}} quality={90} />
+          <Image src="/swatch-info-project-images/Swatch card pattern.png" alt="Swatch card variants across branding, print, textile and digital use cases" width={2080} height={1170} style={{width:'100%', height:'auto'}} quality={90} />
           {/* TODO: add swatch card variants image — use full-width frame size */}
         </div>
 
@@ -1097,7 +1097,7 @@ export default function SwatchInfoPage() {
               </p>
               <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-2)" }}>
                 <SwatchReelVideo />
-                <Image src="/swatch-info-project-images/Sreedhar feedback.png" alt="Internal Adobe feedback from Director of UX Design" width={2080} height={1170} style={{width:'100%', height:'auto', borderRadius:'var(--radius-md)'}} quality={90} />
+                <Image src="/swatch-info-project-images/Sreedhar feedback.png" alt="Internal Adobe feedback from Director of UX Design" width={2080} height={1170} style={{width:'100%', height:'auto'}} quality={90} />
               </div>
             </div>
 
@@ -1111,7 +1111,7 @@ export default function SwatchInfoPage() {
               <LivestreamVideo />
               <p style={{
                 fontSize: 'var(--text-caption)',
-                color: '#2D1A0A80',
+                color: 'var(--color-muted)',
                 marginTop: 'var(--space-3)'
               }}>
                 Watch the full video here:{' '}
@@ -1177,7 +1177,7 @@ export default function SwatchInfoPage() {
                     display: "block",
                     fontFamily: "var(--font-dm-sans), system-ui, sans-serif",
                     fontSize: 'var(--text-ui)',
-                    color: "rgba(44, 42, 39, 0.5)",
+                    color: "var(--color-muted)",
                     letterSpacing: "0.06em",
                     marginBottom: "var(--space-2)",
                   }}

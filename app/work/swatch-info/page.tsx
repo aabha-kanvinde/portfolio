@@ -127,41 +127,6 @@ function LivestreamVideo() {
   );
 }
 
-function StepVideo({ src, label }: { src: string; label: string }) {
-  const videoRef = React.useRef<HTMLVideoElement>(null);
-
-  React.useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            video.play();
-          } else {
-            video.pause();
-          }
-        });
-      },
-      { threshold: 0.4 }
-    );
-
-    observer.observe(video);
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)', marginBottom: 'var(--space-8)' }}>
-      <p style={{ fontSize: '14px', color: 'var(--color-muted)', margin: 0 }}>{label}</p>
-      <div style={{ position: 'relative', width: '100%', overflow: 'hidden' }}>
-        <video ref={videoRef} loop muted playsInline style={{ width: '100%', height: 'auto', display: 'block' }}>
-          <source src={src} type="video/mp4" />
-        </video>
-      </div>
-    </div>
-  );
-}
 
 function InsightCallout({ text }: { text: string }) {
   return (
@@ -1033,13 +998,39 @@ export default function SwatchInfoPage() {
             </p>
           </div>
 
-          {[
-            { src: '/videos/swatch-step1.mp4', label: 'Select the colors that already live in the Swatches panel' },
-            { src: '/videos/swatch-step2.mp4', label: 'Find "Create Swatch Info" in the panel menu' },
-            { src: '/videos/swatch-step3.mp4', label: 'Adjust settings and hit "Create"' },
-          ].map(({ src, label }, index) => (
-            <StepVideo key={index} src={src} label={label} />
-          ))}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)', marginBottom: 'var(--space-8)' }}>
+            <p style={{ fontSize: '14px', color: 'var(--color-muted)', margin: 0 }}>Select the colors that already live in the Swatches panel</p>
+            <video
+              src="/videos/swatch-step1.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full rounded-[var(--radius-lg)]"
+            />
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)', marginBottom: 'var(--space-8)' }}>
+            <p style={{ fontSize: '14px', color: 'var(--color-muted)', margin: 0 }}>Find &quot;Create Swatch Info&quot; in the panel menu</p>
+            <video
+              src="/videos/swatch-step2.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full rounded-[var(--radius-lg)]"
+            />
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)', marginBottom: 'var(--space-8)' }}>
+            <p style={{ fontSize: '14px', color: 'var(--color-muted)', margin: 0 }}>Adjust settings and hit &quot;Create&quot;</p>
+            <video
+              src="/videos/swatch-step3.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full rounded-[var(--radius-lg)]"
+            />
+          </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)', marginBottom: 'var(--space-8)' }}>
             <p style={{ fontSize: '14px', color: 'var(--color-muted)', margin: 0 }}>Specs appear instantly at the center of the viewport, ready to share!</p>
             <Image src="/swatch-info-project-images/swatch-step4.png" alt="Specs appear instantly at the center of the viewport" width={2080} height={1170} style={{ width: '100%', height: 'auto' }} quality={90} />

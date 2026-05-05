@@ -206,9 +206,11 @@ strong, b {
 }
 
 h1, h2, h3, h4 {
+  font-family: var(--font-baskerville);
+  font-weight: 400;
   color: var(--color-heading);
   line-height: 1.15;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.01em;
 }
 
 body, p {

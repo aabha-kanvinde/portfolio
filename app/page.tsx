@@ -3,19 +3,26 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import SectionLabel from "@/components/SectionLabel";
 import SneakPeeksSection from "@/components/SneakPeeksSection";
-
 
 export default function HomePage() {
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+  const [isSwatchHovered, setIsSwatchHovered] = useState(false);
+  const [isGenerativeHovered, setIsGenerativeHovered] = useState(false);
 
   return (
     <>
+      <style>{`
+        @keyframes marquee {
+          from { transform: translateX(0); }
+          to { transform: translateX(-50%); }
+        }
+      `}</style>
+
       {/* ── Hero ──────────────────────────────────────────────────────── */}
       <section
         className="w-full max-w-[1200px] mx-auto px-4 md:px-[48px]"
-        style={{ paddingTop: "220px", paddingBottom: "220px" }}
+        style={{ paddingTop: "64px", paddingBottom: "220px", minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center" }}
       >
         <div
           className="mx-auto text-center"
@@ -28,122 +35,159 @@ export default function HomePage() {
             color: "var(--color-heading)",
           }}
         >
-          <p style={{ fontFamily: 'var(--font-baskerville)', fontSize: 'var(--text-h3)', fontWeight: 400, color: 'var(--color-muted)', textAlign: 'center', marginBottom: 'var(--space-5)', letterSpacing: '0.01em'  }}>
+          <p style={{ fontFamily: 'var(--font-baskerville)', fontSize: 'var(--text-h3)', fontWeight: 400, color: 'var(--color-muted)', textAlign: 'center', marginBottom: 'var(--space-5)', }}>
             Hi, I&apos;m Aabha :)
           </p>
           <h1 style={{ fontFamily: 'var(--font-baskerville)', fontSize: 'var(--text-h1)', fontWeight: 400, color: 'var(--color-heading)', textAlign: 'center', lineHeight: 1.2, marginBottom: 'var(--space-5)' }}>
-            Currently at Adobe, designing tools used and loved by millions of other creatives.
+            I design tools used and loved by millions of other creatives{' '}
+            <span style={{ color: 'var(--color-muted)', fontSize: 'inherit' }}>@Adobe</span>
           </h1>
-          <p style={{ fontFamily: 'var(--font-dm-sans)', fontSize: 'var(--text-body-lg)', fontWeight: 300, color: 'var(--color-muted)', textAlign: 'center', marginBottom: 'var(--space-5)', letterSpacing: '0.01em' }}>
-          Powered by iced coffee and an unreasonable love for details.<br />When I&apos;m not in Figma, you&apos;ll find me at the top of a mountain, petting a wild cow.
+          <p style={{ fontFamily: 'var(--font-dm-sans)', fontSize: 'var(--text-body)', fontWeight: 300, color: 'var(--color-body)', textAlign: 'center', marginBottom: 'var(--space-5)' }}>
+            Powered by iced coffee and an unreasonable love for details.<br />When I&apos;m not in Figma, you&apos;ll find me at the top of a mountain, petting a wild cow.
           </p>
         </div>
-
-        {/* TODO: floating illustrations/icons/photos go here */}
         <div></div>
       </section>
 
-      {/* ── Case Studies ────────────────────────────────────────────── */}
-      <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', height: '12px', background: 'rgba(228, 228, 224, 0.3)' }} />
-      <section style={{ paddingTop: "var(--space-9)", paddingBottom: "var(--space-9)" }}>
-        <style>{`
-          .case-study-grid {
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-7);
-            padding-inline: 16px;
-          }
-          @media (min-width: 768px) { .case-study-grid { padding-inline: 48px; } }
-          @media (min-width: 1024px) { .case-study-grid { padding-inline: 48px; } }
-          .case-study-card { display: block; text-decoration: none; cursor: pointer; }
-          .case-study-card-image {
-            width: 100%;
-            aspect-ratio: 16/6;
-            background: var(--color-surface);
-            border-radius: var(--radius-lg);
-            display: block;
-            transition: opacity 150ms ease;
-          }
-          .case-study-card:hover .case-study-card-image { opacity: 0.9; }
-          .case-study-card-title {
-            margin: var(--space-3) 0 0 0;
-            font-family: var(--font-dm-sans), system-ui, sans-serif;
-            font-size: var(--text-body);
-            font-weight: 500;
-            color: var(--color-heading);
-          }
-          .case-study-card-disabled {
-            display: block;
-            cursor: default;
-            position: relative;
-          }
-          .case-study-card-disabled::after {
-            content: 'Coming soon';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: var(--color-bg);
-            color: var(--color-muted);
-            font-family: var(--font-dm-sans), system-ui, sans-serif;
-            font-size: var(--text-body-sm);
-            padding: 4px 10px;
-            border-radius: var(--radius-sm);
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 150ms ease;
-            white-space: nowrap;
-          }
-          .case-study-card-disabled:hover::after { opacity: 1; }
-        `}</style>
-        <div className="w-full max-w-[1200px] mx-auto px-4 md:px-[48px]" style={{ marginBottom: "var(--space-7)", textAlign: "center" }}>
-          <SectionLabel>Deep Dives</SectionLabel>
+      {/* ── Deep Dives Marquee ────────────────────────────────────────── */}
+      <div style={{ overflow: 'hidden', width: '100%', background: 'rgba(228,228,225,0.5)', padding: '8px 0' }}>
+        <div style={{ display: 'flex', gap: '24px', animation: 'marquee 30s linear infinite', width: 'max-content', alignItems: 'center' }}>
+          {[...Array(40)].map((_, i) => (
+            <span key={i} style={{ display: 'flex', alignItems: 'center', gap: '24px', fontFamily: 'var(--font-baskerville)', fontSize: '16px', fontWeight: 400, letterSpacing: '-0.02em', color: 'var(--color-body)', whiteSpace: 'nowrap', lineHeight: 1 }}>
+              deep dives
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/icons/star-dives.svg" alt="" style={{ width: '14px', height: '16px', display: 'block', flexShrink: 0 }} />
+            </span>
+          ))}
         </div>
-        <div className="case-study-grid">
-          <div style={{ maxWidth: '100%', margin: '0 auto', width: '100%', display: 'flex', flexDirection: 'column', gap: 'var(--space-7)' }}>
-            <Link href="/work/swatch-info" className="case-study-card">
-              <div
-                onMouseEnter={() => setHoveredCard('swatch')}
-                onMouseLeave={() => setHoveredCard(null)}
-                style={{ borderRadius: 0, overflow: 'hidden', cursor: 'pointer' }}
-              >
-                <div style={{ position: 'relative' }}>
-                  <Image src="/swatch-info-project-images/correct-swatch main page thumbnail.png" alt="Simplified Color Documentation in Illustrator" width={1040} height={585} quality={90} className="w-full" style={{aspectRatio: '16/6', objectFit: 'cover', borderRadius: 0}} />
-                  <div style={{
-                    position: 'absolute',
-                    inset: 0,
-                    background: hoveredCard === 'swatch' ? 'rgba(255,255,255,0.12)' : 'rgba(255,255,255,0)',
-                    transition: 'background 200ms ease',
-                  }} /></div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: 'var(--space-3) var(--space-1) var(--space-3)' }}>
-                  <h3 style={{ fontFamily: 'var(--font-baskerville)', fontSize: 'var(--text-h3)', fontWeight: 400, color: 'var(--color-heading)', lineHeight: 1, margin: 0 }}>Simplified Color Documentation in Illustrator</h3>
-                  <p style={{ fontFamily: 'var(--font-dm-sans)', fontSize: 'var(--text-body)', fontWeight: 300, color: 'var(--color-body)', lineHeight: 1, margin: 0 }}>Core Workflow Improvement</p>
-                  <p style={{ fontFamily: 'var(--font-dm-sans)', fontSize: 'var(--text-body)', fontWeight: 300, color: 'var(--color-body)', lineHeight: 1, margin: 0 }}>2025</p>
-                </div>
+      </div>
+
+      {/* ── Case Studies ────────────────────────────────────────────── */}
+      <section style={{ paddingTop: '96px', paddingBottom: '96px', paddingInline: '96px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '96px' }}>
+
+          {/* Card 1: Swatch Info — vertical */}
+          <Link href="/work/swatch-info" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+            <div
+              onMouseEnter={() => { setHoveredCard('swatch'); setIsSwatchHovered(true); }}
+              onMouseLeave={() => { setHoveredCard(null); setIsSwatchHovered(false); }}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                height: '600px',
+                transition: 'background 200ms ease',
+                cursor: 'pointer',
+                background: hoveredCard === 'swatch' ? 'var(--color-surface)' : 'transparent',
+              }}
+            >
+              {/* Image */}
+              <div style={{ flex: 1, overflow: 'hidden', width: '100%' }}>
+                <Image
+                  src="/swatch-info-project-images/swatch-main-thumbnail.png"
+                  alt="Simplified Color Documentation in Illustrator"
+                  width={1040}
+                  height={585}
+                  quality={90}
+                  sizes="(max-width: 768px) 100vw, 70vw"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transform: isSwatchHovered ? 'scale(1.04)' : 'scale(1)', transition: 'transform 400ms cubic-bezier(0.34, 1.56, 0.64, 1)' }}
+                />
               </div>
-            </Link>
-            <div className="case-study-card-disabled" role="button" aria-disabled="true" tabIndex={-1}>
-              <div style={{ borderRadius: 0, overflow: 'hidden', cursor: 'not-allowed' }}>
-                <Image src="/swatch-info-project-images/wip thumbnail.png" alt="Generative Edit" width={1040} height={585} quality={90} className="w-full" style={{aspectRatio: '16/6', objectFit: 'cover', borderRadius: 0}} />
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: 'var(--space-3) var(--space-1) var(--space-3)' }}>
-                  <h3 style={{ fontFamily: 'var(--font-baskerville)', fontSize: 'var(--text-h3)', fontWeight: 400, color: 'var(--color-heading)', lineHeight: 1, margin: 0 }}>Generative Edit (coming soon!)</h3>
-                  <p style={{ fontFamily: 'var(--font-dm-sans)', fontSize: 'var(--text-body)', fontWeight: 300, color: 'var(--color-body)', lineHeight: 1, margin: 0 }}>0 → 1 Feature Design</p>
-                  <p style={{ fontFamily: 'var(--font-dm-sans)', fontSize: 'var(--text-body)', fontWeight: 300, color: 'var(--color-body)', lineHeight: 1, margin: 0 }}>2026</p>
-                </div>
+              {/* Text */}
+              <div style={{ padding: 'var(--space-4) var(--space-6)', display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
+                <h3 style={{ fontFamily: 'var(--font-baskerville), Georgia, serif', fontSize: 'var(--text-h2)', fontWeight: 400, color: 'var(--color-heading)', lineHeight: 1.2, margin: 0 }}>
+                  Simplified Color Documentation in Illustrator
+                </h3>
+                <p style={{ fontFamily: 'var(--font-dm-sans), system-ui, sans-serif', fontSize: 'var(--text-body-sm)', color: 'var(--color-muted)', margin: 0 }}>Core Workflow Improvement · 2025</p>
               </div>
             </div>
+          </Link>
+
+          {/* Card 2: Generative Edit — vertical */}
+          <div
+            onMouseEnter={() => { setHoveredCard('generative'); setIsGenerativeHovered(true); }}
+            onMouseLeave={() => { setHoveredCard(null); setIsGenerativeHovered(false); }}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              height: '620px',
+              transition: 'background 200ms ease',
+              background: hoveredCard === 'generative' ? 'var(--color-surface)' : 'transparent',
+            }}
+          >
+            {/* Image */}
+            <div style={{ flex: 1, overflow: 'hidden', width: '100%' }}>
+              <Image
+                src="/swatch-info-project-images/wip-thumbnail.png"
+                alt="Generative Edit"
+                width={1040}
+                height={585}
+                quality={90}
+                sizes="(max-width: 768px) 100vw, 70vw"
+                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transform: isGenerativeHovered ? 'scale(1.04)' : 'scale(1)', transition: 'transform 400ms cubic-bezier(0.34, 1.56, 0.64, 1)' }}
+              />
+            </div>
+            {/* Text */}
+            <div style={{ padding: 'var(--space-4) var(--space-6)', display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
+              <h3 style={{ fontFamily: 'var(--font-baskerville), Georgia, serif', fontSize: 'var(--text-h2)', fontWeight: 400, color: 'var(--color-heading)', lineHeight: 1.2, margin: 0 }}>
+                Generative Edit (coming soon!)
+              </h3>
+              <p style={{ fontFamily: 'var(--font-dm-sans), system-ui, sans-serif', fontSize: 'var(--text-body-sm)', color: 'var(--color-muted)', margin: 0 }}>0 → 1 Feature Design · 2026</p>
+            </div>
           </div>
+
+          {/* Card 3: Women's Fitness Tracker — vertical */}
+          <div
+            onMouseEnter={() => setHoveredCard('fitness')}
+            onMouseLeave={() => setHoveredCard(null)}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              height: '620px',
+              transition: 'background 200ms ease',
+              background: hoveredCard === 'fitness' ? 'var(--color-surface)' : 'transparent',
+            }}
+          >
+            {/* Image */}
+            <div style={{ flex: 1, overflow: 'hidden', width: '100%' }}>
+              <Image
+                src="/swatch-info-project-images/wip-thumbnail.png"
+                alt="Women's Fitness Tracker"
+                width={1040}
+                height={585}
+                quality={90}
+                sizes="(max-width: 768px) 100vw, 70vw"
+                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+              />
+            </div>
+            {/* Text */}
+            <div style={{ padding: 'var(--space-4) var(--space-6)', display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
+              <h3 style={{ fontFamily: 'var(--font-baskerville), Georgia, serif', fontSize: 'var(--text-h2)', fontWeight: 400, color: 'var(--color-heading)', lineHeight: 1.2, margin: 0 }}>
+                Women&apos;s Fitness Tracker
+              </h3>
+              <p style={{ fontFamily: 'var(--font-dm-sans), system-ui, sans-serif', fontSize: 'var(--text-body-sm)', color: 'var(--color-muted)', margin: 0 }}>Personal / Thesis Project · 2024</p>
+            </div>
+          </div>
+
         </div>
       </section>
 
-      {/* ── Sneak Peeks ─────────────────────────────────────────────── */}
-      <div style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)', height: '12px', background: 'rgba(228, 228, 224, 0.3)' }} />
-      <section style={{ paddingBlock: "var(--space-9)" }}>
-        <div className="w-full max-w-[1200px] mx-auto px-4 md:px-[48px]" style={{ marginBottom: "var(--space-7)", textAlign: "center" }}>
-          <SectionLabel>Sneak Peeks</SectionLabel>
+      {/* ── Sneak Peeks Marquee ───────────────────────────────────────── */}
+      <div style={{ overflow: 'hidden', width: '100%', background: 'rgba(228,228,225,0.5)', padding: '8px 0' }}>
+        <div style={{ display: 'flex', gap: '24px', animation: 'marquee 30s linear infinite', width: 'max-content', alignItems: 'center' }}>
+          {[...Array(40)].map((_, i) => (
+            <span key={i} style={{ display: 'flex', alignItems: 'center', gap: '24px', fontFamily: 'var(--font-baskerville)', fontSize: '16px', fontWeight: 400, letterSpacing: '-0.02em', color: 'var(--color-body)', whiteSpace: 'nowrap', lineHeight: 1 }}>
+              sneak peeks
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/icons/star-peeks.svg" alt="" style={{ width: '16px', height: '16px', display: 'block', flexShrink: 0 }} />
+            </span>
+          ))}
         </div>
+      </div>
+
+      {/* ── Sneak Peeks ─────────────────────────────────────────────── */}
+      <section style={{ paddingBlock: '96px' }}>
         <SneakPeeksSection />
-        <div className="pt-[var(--space-9)]" style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', marginTop: '96px' }}>
           <p style={{ fontFamily: 'var(--font-dm-sans)', fontSize: 'var(--text-body)', fontWeight: 300, color: 'var(--color-body)' }}>
             My older branding and visual work lives on Behance.{' '}
             <a

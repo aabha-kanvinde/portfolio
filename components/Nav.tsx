@@ -50,67 +50,54 @@ export default function Nav() {
       }
       lastScrollY.current = currentScrollY;
     };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   if (isCaseStudy) return null;
 
-  const linkBase =
-    "type-ui text-body transition-colors relative " +
-    "after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-px " +
-    "after:bg-heading after:transition-all after:duration-150 " +
-    "hover:text-heading hover:after:w-full";
-
-  const linkClass = (href: string) =>
-    `${linkBase} ${pathname === href ? "text-heading after:w-full" : ""}`;
-
   const headerStyle: React.CSSProperties = {
     position: "fixed",
-    top: (isCaseStudy && scrollState === "hidden") ? "-80px" : 0,
+    top: 0,
     left: 0,
     right: 0,
     zIndex: 100,
-    background: (isCaseStudy && scrollState === "atTop") ? "transparent" : "rgba(248, 248, 246, 0.80)",
-    backdropFilter: (isCaseStudy && scrollState === "atTop") ? "none" : "blur(8px)",
-    ...(isCaseStudy && scrollState === "atTop" ? {
-      borderBottom: "none",
-      boxShadow: "none",
-    } : {}),
-    height: "64px",
-    overflow: "visible",
+    background: "rgba(248, 248, 246, 0.8)",
     transform: visible ? "translateY(0)" : "translateY(-100%)",
-    ...(isCaseStudy ? {
-      transition: "background 150ms ease, top 300ms ease 50ms",
-      willChange: "transform",
-    } : {
-      transition: "transform 300ms ease",
-    }),
+    transition: "transform 300ms ease",
+  };
+
+  const navLinkStyle: React.CSSProperties = {
+    fontFamily: "var(--font-dm-sans), system-ui, sans-serif",
+    fontSize: "14px",
+    fontWeight: 300,
+    color: "var(--color-muted)",
+    textDecoration: "none",
+    pointerEvents: "none" as const,
   };
 
   return (
     <header style={headerStyle}>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          height: "100%",
-          maxWidth: "1200px",
-          marginInline: "auto",
-          overflow: "visible",
-        }}
-        className="nav-inner"
-      >
-        {/* Desktop nav */}
-        <nav
-          className="hidden md:flex items-center"
-          style={{ gap: "var(--space-6)" }}
+      <div className="nav-bar" style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        {/* Name */}
+        <Link
+          href="/"
+          style={{
+            fontFamily: "var(--font-dm-sans), system-ui, sans-serif",
+            fontSize: "14px",
+            fontWeight: 300,
+            color: "var(--color-muted)",
+            textDecoration: "none",
+          }}
         >
-          <Link href="/" className={linkClass("/")}>Work</Link>
-          <span className="type-ui" style={{ color: "var(--color-muted)", pointerEvents: "none" }}>About</span>
-          <span className="type-ui" style={{ color: "var(--color-muted)", pointerEvents: "none" }}>Side Quests</span>
-          <span className="type-ui" style={{ color: "var(--color-muted)", pointerEvents: "none" }}>Resume</span>
+          Aabha Kanvinde
+        </Link>
+
+        {/* Desktop links */}
+        <nav className="hidden md:flex items-center" style={{ gap: "48px" }}>
+          <span style={navLinkStyle}>about</span>
+          <span style={navLinkStyle}>side quests</span>
+          <span style={navLinkStyle}>resume</span>
         </nav>
 
         {/* Mobile hamburger */}
@@ -141,13 +128,8 @@ export default function Nav() {
       )}
 
       <style>{`
-        .nav-inner { padding-inline: 24px; }
-        @media (min-width: 768px) {
-          .nav-inner { padding-inline: 24px; }
-        }
-        @media (min-width: 1024px) {
-          .nav-inner { padding-inline: 24px; }
-        }
+        .nav-bar { padding: 12px; }
+        @media (min-width: 1024px) { .nav-bar { padding: 12px 96px; } }
       `}</style>
     </header>
   );

@@ -228,11 +228,12 @@ export default function SneakPeeksSection() {
         </div>
         <h3
           style={{
-            margin: "var(--space-3) 0 0 0",
-            fontFamily: "var(--font-dm-sans)",
-            fontSize: "var(--text-body)",
+            margin: "24px 0 0 0",
+            fontFamily: "var(--font-baskerville), Georgia, serif",
+            fontSize: "24px",
+            fontWeight: 400,
             color: "var(--color-heading)",
-            lineHeight: 1.4,
+            lineHeight: 1.25,
           }}
         >
           {item.title}
@@ -243,28 +244,9 @@ export default function SneakPeeksSection() {
 
   return (
     <>
-      <style>{`
-        .sneak-columns {
-          padding-inline: 48px;
-        }
-        @media (min-width: 768px) { .sneak-columns { padding-inline: 48px; } }
-        @media (min-width: 1024px) { .sneak-columns { padding-inline: 48px; } }
-      `}</style>
-
-      <div className="sneak-columns gap-8 md:gap-[72px]" style={{ display: "flex", flexDirection: "column" }}>
-        {/* Row 1: 2 cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-[72px]">
-          {getRow(row1Ids).map((item) => renderCard(item))}
-        </div>
-
-        {/* Row 2: 3 cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-[72px]">
-          {getRow(row2Ids).map((item) => renderCard(item))}
-        </div>
-
-        {/* Row 3: 3 cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-[72px]">
-          {getRow(row3Ids).map((item) => renderCard(item))}
+      <div>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', rowGap: '128px', columnGap: '128px', padding: '0 96px' }}>
+          {getRow([4, 3, 5, 6, 2, 1, 7, 9]).map((item) => renderCard(item))}
         </div>
       </div>
 

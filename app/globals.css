@@ -91,7 +91,7 @@
   --tracking-overline: 0.12em;
 
   /* Body — default paragraph text */
-  --text-body:         18px;
+  --text-body:         16px;
   --font-body:         var(--font-dm-sans), system-ui, sans-serif;
   --leading-body:      1.7;
   --tracking-body:     0em;
